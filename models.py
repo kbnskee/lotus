@@ -216,10 +216,34 @@ class Citizenship(models.Model):
         return self.name      
     
 
+class ActivityType(models.Model):
+    name                = models.CharField(max_length=225,unique=True)
+    description         = models.CharField(max_length=225,blank=True,null=True)
+    is_enabled          = models.BooleanField(default=False)
+    created_date        = models.DateTimeField(auto_now_add = True,blank=True,null=True)
+    updated_date        = models.DateTimeField(auto_now = True,blank=True,null=True)
+    created_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="activity_type_created_by")
+    updated_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="activity_type_updated_by")
+
+    def __str__(self):
+        return self.name      
+
+
 class ActivityLog(models.Model):
+    app=models.ForeignKey(App,null=True,blank=True,on_delete=models.SET_NULL)
+    page=models.ForeignKey(Page,null=True,blank=True,on_delete=models.SET_NULL)
     remarks=models.TextField()
-    updated_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    update_date=models.DateTimeField(default=datetime.now,blank=False)
+    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
+    created_date=models.DateTimeField(default=datetime.now,blank=False)
+
+
+class Notification(models.Model):
+    page=models.ForeignKey(Page,null=True,blank=True,on_delete=models.SET_NULL)
+    remarks=models.TextField()
+    is_read=models.BooleanField(default=False)
+    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
+    recipient=models.ForeignKey(User,null=True,blank=True,on_delete=models.SET_NULL)
+    created_date=models.DateTimeField(default=datetime.now,blank=False)
 
 
 # @re(post_save,sender=User)
