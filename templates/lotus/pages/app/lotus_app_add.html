@@ -1,0 +1,79 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            {{page.name}}
+        </div>
+        <div class="lotus-card-body-dark">
+            <div class="card-body">
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                    <div class="col-10" style="color: #aaa;">{{form.name}}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                    <div class="col-10" style="color: #aaa;">{{form.description}}</div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col text-center">
+                        <button class="btn btn-sm btn-secondary" style="background-color: #727272;">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="card border-1 border-dark" style="background-color: #424242;">
+        <div class="card-header py-1" py-1" style="background-color: #363636; color: #eee;">
+           {{page.name}}
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                <div class="col-10" style="color: #aaa;">{{form.name}}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                <div class="col-10" style="color: #aaa;">{{form.description}}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <button class="btn btn-sm btn-secondary" style="background-color: #727272;">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-3">
+    <div class="card border-1 border-dark" style="background-color: #424242;">
+        <div class="card-header py-1" py-1" style="background-color: #363636; color: #eee;">
+           App List
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                <div class="col-10" style="color: #aaa;">{{form.name}}</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                <div class="col-10" style="color: #aaa;">{{form.description}}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <button class="btn btn-sm btn-secondary" style="background-color: #727272;">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

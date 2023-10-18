@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg py-1" style="background-color: #303336; color: #eee;">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between d-md-none d-block" >
+      <button class="btn px-1 py-0 open-btn me-2" style="color: #eee;"><i class="fa-solid fa-bars-staggered"></i></button>
+      <a class="navbar-brand fs-4" href="#" style="color: #eee;"><span class="rounded px-2 py-0 " style="color: #eee;">Lotus</span> Lotus</a>
+    </div>
+
+    <button class="navbar-toggler" style="color: #eee;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" style="color: #eee;" aria-current="page" href="{%  url 'homems_home' %}"><u>Home</u></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" style="color: #eee;" href="#">{{ page_list.app_name }} > <u>{{ page_list.page_name }}</u></a>
+        </li>
+      </ul>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent2">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <!-- <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"><span>Notification</span>
+                <span class="bg-danger rounded-pill  text-white py-0 px-2">02</span>
+            </a>
+          </li>   -->
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" style="color: #eee;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Hello, {{user_details.first_name}} {{user_details.middle_name}} {{user_details.last_name}}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'profilems_main' %}">Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</nav>

@@ -233,7 +233,7 @@ class ActivityLog(models.Model):
     app=models.ForeignKey(App,null=True,blank=True,on_delete=models.SET_NULL)
     page=models.ForeignKey(Page,null=True,blank=True,on_delete=models.SET_NULL)
     remarks=models.TextField()
-    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
+    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name="activity_log_created_by")
     created_date=models.DateTimeField(default=datetime.now,blank=False)
 
 
@@ -241,8 +241,8 @@ class Notification(models.Model):
     page=models.ForeignKey(Page,null=True,blank=True,on_delete=models.SET_NULL)
     remarks=models.TextField()
     is_read=models.BooleanField(default=False)
-    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    recipient=models.ForeignKey(User,null=True,blank=True,on_delete=models.SET_NULL)
+    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name="notification_created_by")
+    recipient=models.ForeignKey(User,null=True,blank=True,on_delete=models.SET_NULL,related_name="recipient_created_by")
     created_date=models.DateTimeField(default=datetime.now,blank=False)
 
 

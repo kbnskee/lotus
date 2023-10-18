@@ -1,0 +1,13 @@
+<div class="ka-sidebar" id="side_nav" style="background-color: #333639;">
+    <!-- <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
+        <h1 class="fs-4"><span class="bg-white text-dark rounded shadow px-2 me-2">{{subscriber.name}}</span> <span class="text-white">{{subscriber.name}}</span> </h1>
+        <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="fa-solid fa-bars-staggered"></i></button>
+    </div> -->
+    <ul class="list-unstyled px-2">
+        {% for key, value in nav_list.items %}
+            <li class="{{value.state}}"><a href="{% url value.pathname %}" class="text-decoration-none px-3 py-2 d-block"> {{value.name}}</a></li>
+        {% endfor %}
+        
+    </ul>
+    <hr class="h-color mx-2">
+</div>   

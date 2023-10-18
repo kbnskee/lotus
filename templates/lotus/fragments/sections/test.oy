@@ -1,0 +1,5 @@
+{% for item in page_list %}
+
+        <li class="{{page_list[item].state}}"><a href="{% url page_list[item].path_name %}" class="text-decoration-none px-3 py-2 d-block"> {{page_list[item].name}}</a></li>
+
+        {% endfor %}

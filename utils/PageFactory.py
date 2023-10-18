@@ -19,11 +19,39 @@ def lookup_logged_user(user):
     return False
 
 
+def parse_to_page_info(string):
+    list=string.split("_")
+    app=list[0]
+    operation=list[-1]
+    if len(list) > 2:
+        model=' '.join(list[1:-1])
+    else:
+        model=[]
+    page_info = {
+        'app':app, 
+        'model': model, 
+        'operation': operation
+    }
+    return page_info
+
+
+def create_page_name(page_info):
+    page_name = page_info['operation'].capitalize() + " "+ page_info['model'].capitalize()
+    return page_name
+
 
 
 def create_page_list(request=False,nav_list=False,operation="",page_name=False,app_name=False):
     clu_instance=clu(request.user.id)
     c={}
+    lts_page_name={}
+    if not page_name:
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)
+        subdir=str(calframe[1][3])
+        parse_subdir=parse_to_page_info(subdir)
+        print(parse_subdir)
+        lts_page_name=create_page_name(parse_subdir)
 
     if bool(nav_list):
         curframe = inspect.currentframe()
@@ -61,6 +89,7 @@ def create_page_list(request=False,nav_list=False,operation="",page_name=False,a
         
 
     return {'nav_list':nav_list,
+            'page':{'name':lts_page_name,},
             'page_list':{'page_name':page_name,'app_name':app_name},
             'user_apps':USER_APPS,
             'user_pages':USER_PAGES,
