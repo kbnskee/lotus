@@ -237,13 +237,13 @@ class ActivityLog(models.Model):
     created_date=models.DateTimeField(default=datetime.now,blank=False)
 
 
-class Notification(models.Model):
-    page=models.ForeignKey(Page,null=True,blank=True,on_delete=models.SET_NULL)
-    remarks=models.TextField()
-    is_read=models.BooleanField(default=False)
-    created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name="notification_created_by")
-    recipient=models.ForeignKey(User,null=True,blank=True,on_delete=models.SET_NULL,related_name="recipient_created_by")
-    created_date=models.DateTimeField(default=datetime.now,blank=False)
+# class Notification(models.Model):
+#     page=models.ForeignKey(Page,null=True,blank=True,on_delete=models.SET_NULL)
+#     remarks=models.TextField()
+#     is_read=models.BooleanField(default=False)
+#     created_by=models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name="notification_created_by")
+#     recipient=models.ForeignKey(User,null=True,blank=True,on_delete=models.SET_NULL,related_name="recipient_created_by")
+#     created_date=models.DateTimeField(default=datetime.now,blank=False)
 
 
 # @re(post_save,sender=User)
