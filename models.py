@@ -58,6 +58,7 @@ class User(AbstractBaseUser):
 
 
 class App(models.Model):
+    id              = models.IntegerField(primary_key=True)
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
     is_enabled      = models.BooleanField(default=False)
