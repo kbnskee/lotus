@@ -26,5 +26,7 @@ class AppForm(forms.ModelForm):
             'style':'background-color:#636363; color:#ccc;'
         })
 
-
+class ExcelImportForm(forms.Form):
+    file = forms.FileField(label='Select an Excel file')
+    model=forms.CharField(max_length=90,required=False)
         
