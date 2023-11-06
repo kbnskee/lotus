@@ -52,7 +52,8 @@ def create_page_list(request=False,nav_list=False,operation="",page_name=False,a
         parse_subdir=parse_to_page_info(subdir)
         print(parse_subdir)
         lts_page_name=create_page_name(parse_subdir)
-
+    elif page_name:
+        lts_page_name=page_name        
     if bool(nav_list):
         curframe = inspect.currentframe()
         calframe = inspect.getouterframes(curframe, 2)
