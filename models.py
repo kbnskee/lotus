@@ -67,8 +67,11 @@ class App(models.Model):
     created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="app_created_by")
     updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="app_updated_by")
 
+    def __str__(self):
+        return self.name
 
 class Page(models.Model):
+    id              = models.IntegerField(primary_key=True)
     app             = models.ForeignKey(App,null=True,blank=True,on_delete=models.SET_NULL)
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
@@ -78,6 +81,8 @@ class Page(models.Model):
     created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="page_created_by")
     updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="page_updated_by")
 
+    def __str__(self):
+        return self.name
 
 class Group(models.Model):
     name            = models.CharField(max_length=225,unique=True)
