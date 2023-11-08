@@ -1,0 +1,75 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            {{page.name}}
+        </div>
+        <div class="lotus-card-body-dark">
+            <div class="card-body">
+                <form action="{{lotus_dmo.add}}" method="post">{% csrf_token %}
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">ID: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.id}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.name}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.description}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Status: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.is_enabled}}</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col text-center">
+                            <button class="btn btn-sm btn-secondary" type="submit" style="background-color: #727272;">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            Application List
+        </div>
+        <div class="lotus-card-body-dark">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 63px; border: 1px solid #636363;">ID</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Name</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Description</th>
+                        <th style="width: 90px; border: 1px solid #636363;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ea in list %}
+                    <tr>
+                        <td style="border: 1px solid #636363;"><a href="{% url 'lotus_app_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
+                        <td style="border: 1px solid #636363;">{{ ea.name }}</td>
+                        <td style="border: 1px solid #636363;">{{ ea.status }}</td>
+                        <td style="border: 1px solid #636363;">{% if ea.is_enabled %}Enabled{% elif not ea.is_enabled %}Disabled{% else %}Unknow{%endif%}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}
