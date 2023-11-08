@@ -1,5 +1,5 @@
 from django import forms
-from lotus.models import User,App,Page
+from lotus.models import App, Page, Group, GroupApp, GroupPage
 
 
 class PaginatedSearchForm(forms.Form):
@@ -61,6 +61,61 @@ class PageForm(forms.ModelForm):
             'class':'form-control form-control-sm border-1 border-dark',
             'style':'background-color:#636363; color:#ccc;'
         },choices=[(True, 'Enabled'), (False, 'Disabled')])
+
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model=Group
+        fields=['id','name','description','is_enabled','created_by']
+
+        widgets={}
+
+        widgets['id']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['name']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['description']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['is_enabled']=forms.Select(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        },choices=[(True, 'Enabled'), (False, 'Disabled')])        
+
+
+class GroupAppForm(forms.ModelForm):
+    class Meta:
+        model=GroupApp
+        fields=['app']
+
+        widgets={}
+
+        widgets['app']=forms.Select(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+
+
+class GroupPageForm(forms.ModelForm):
+    class Meta:
+        model=GroupPage
+        fields=['page']
+    def __init__(self,*args,**kwargs):
+        app_list = kwargs.pop('apps')
+        print(app_list)
+        super().__init__(*args, **kwargs)
+        self.fields['page'] = forms.ModelChoiceField(
+            queryset=Page.objects.filter(app_id__in=app_list),
+            widget=forms.Select(attrs={
+                'class':'form-control form-control-sm border-1 border-dark',
+                'style':'background-color:#636363; color:#ccc;'})
+            )
+
 
 class ExcelImportForm(forms.Form):
     file = forms.FileField(label='Select an Excel file')

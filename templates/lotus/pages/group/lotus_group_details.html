@@ -1,0 +1,122 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            {{page.name}}
+        </div>
+        <div class="lotus-card-body-dark">
+            <div class="card-body">
+                <form action="{{lotus_dmo.add}}" method="post">{% csrf_token %}
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">ID: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.id}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.name}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.description}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Status: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.is_enabled}}</div>
+                    </div>
+             
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            Group Applications
+        </div>
+        <div class="lotus-card-body-dark">
+            <form action="{% url 'lotus_group_app_add' details.id %}" method="post">{% csrf_token %}
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Application List: </div>
+                    <div class="col-3" style="color: #aaa;">{{group_app_form.app}}</div>
+                    <div class="col-3" style="color: #aaa;">
+                        <button class="btn btn-sm btn-secondary" type="submit" style="background-color: #727272; color: #eee;">Add Selected Application to Group</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="lotus-card-body-dark">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 63px; border: 1px solid #636363;">ID</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Application</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ea in group_app_list %}
+                    <tr>
+                        <td style="border: 1px solid #636363;">{{ ea.id }}</td>
+                        <td style="border: 1px solid #636363;">{{ ea.app.name }}</td>
+                        <td style="border: 1px solid #636363;"><a href="{% url 'lotus_group_app_delete' details.id ea.id %}" style="color: #aaa;">Delete</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            Group Pages
+        </div>
+        <div class="lotus-card-body-dark">
+            <form action="{% url 'lotus_group_page_add' details.id %}" method="post">{% csrf_token %}
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Page List: </div>
+                    <div class="col-3" style="color: #aaa;">{{group_page_form.page}}</div>
+                    <div class="col-3" style="color: #aaa;">
+                        <button class="btn btn-sm btn-secondary" type="submit" style="background-color: #727272; color: #eee;">Add Selected Page to Group</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="lotus-card-body-dark">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 63px; border: 1px solid #636363;">ID</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Name</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Description</th>
+                        <th style="width: 90px; border: 1px solid #636363;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ea in list %}
+                    <tr>
+                        <td style="border: 1px solid #636363;"><a href="{% url 'lotus_page_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
+                        <td style="border: 1px solid #636363;">{{ ea.name }}</td>
+                        <td style="border: 1px solid #636363;">{{ ea.status }}</td>
+                        <td style="border: 1px solid #636363;">{% if ea.is_enabled %}Enabled{% elif not ea.is_enabled %}Disabled{% else %}Unknow{%endif%}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

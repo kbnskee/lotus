@@ -1,0 +1,42 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            Page Details
+        </div>
+        <div class="lotus-card-body-dark">
+            <div class="card-body">
+                <form action="{{lotus_dmo.add}}" method="post">{% csrf_token %}
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">App: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.app.id}} - {{details.app}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">ID: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.id}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.name}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.description}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Status: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.is_enabled}}</div>
+                    </div>
+             
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

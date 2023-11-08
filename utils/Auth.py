@@ -4,8 +4,7 @@ from lotus.sessions.session import USER_APPS, USER_PAGES, USER_DETAILS
 from lotus.models import (
     User,
     UserGroup,
-    AppGroup,
-    PageGroup
+
 )
 
 

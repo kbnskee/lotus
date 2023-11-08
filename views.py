@@ -4,14 +4,16 @@ import pandas as pd
 
 import openpyxl
 
+from django.db.models import Q
+
 from lotus.utils.PageFactory import (
     create_page_list as cpl,
     this_func_to_path as tftp
 )
 
-from lotus.models import App, Page
+from lotus.models import App, Page, Group, GroupApp, GroupPage
 
-from lotus.forms import AppForm, PageForm, ExcelImportForm
+from lotus.forms import AppForm, PageForm, GroupForm, GroupAppForm, GroupPageForm, ExcelImportForm
 
 app_name = "Lotus Admin"
 lotus_app='app'
@@ -19,10 +21,33 @@ lotus_page='page'
 lotus_group='group'
 
 
+def nav_list():
+    nav_list={
+        "lotus_app_list": {
+            "id":2,
+            "state":"",
+            "name":"Applications",
+            "pathname":"lotus_app_list"
+            },
+        "lotus_page_list": {
+            "id":2,
+            "state":"",
+            "name":"Pages",
+            "pathname":"lotus_page_list"
+            },
+        "lotus_group_list": {
+            "id":2,
+            "state":"",
+            "name":"Groups",
+            "pathname":"lotus_group_list"
+            },
+        }
+    return nav_list
+
 
 ######### START APP #########
 def lotus_app_list(request):
-    c=cpl(request,operation='-c',app_name=app_name)
+    c=cpl(request,nav_list=nav_list(),operation='-c',app_name=app_name)
     c['form']=AppForm()
     c['list']=App.objects.all()
     return render(request,tftp(subdir=lotus_app),c) 
@@ -39,26 +64,30 @@ def lotus_app_add(request):
 
 
 def lotus_app_details(request,id):
-    c=cpl(request,app_name=app_name)
-    details=AppForm.objects.get(id=id)
+    c=cpl(request,nav_list=nav_list(),app_name=app_name)
+    details=App.objects.get(id=id)
+    list=Page.objects.filter(app=details)
+    
     c['details']=details
+    c['list']=list    
+    c['app_group_list']=GroupApp.objects.filter(app=details)
     return render(request,tftp(subdir=lotus_app),c) 
 
 
 def lotus_app_update(request):
-    c=cpl(request,app_name=app_name)
+    c=cpl(request,nav_list=nav_list(),app_name=app_name)
     return render(request,tftp(subdir=lotus_app),c) 
 
 
 def lotus_app_delete(request):
-    c=cpl(request,app_name=app_name)
+    c=cpl(request,nav_list=nav_list(),app_name=app_name)
     return render(request,tftp(subdir=lotus_app),c) 
 ######### END APP #########
 
 
 ######### START PAGE #########
 def lotus_page_list(request):
-    c=cpl(request,operation='-c',app_name=app_name)
+    c=cpl(request,nav_list=nav_list(),operation='-c',app_name=app_name)
     c['form']=PageForm()
     c['list']=Page.objects.all()
     return render(request,tftp(subdir=lotus_page),c) 
@@ -74,52 +103,100 @@ def lotus_page_add(request):
     return redirect('lotus_page_list') 
 
 
-def lotus_page_details(request):
-    c=cpl(request,app_name="Lotus Admin",page_name="Page")
+def lotus_page_details(request,id):
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Page")
+    details=Page.objects.get(id=id)
+    c['details']=details
     return render(request,tftp(subdir=lotus_page),c) 
 
 def lotus_page_update(request):
-    c=cpl(request,app_name="Lotus Admin",page_name="Page")
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Page")
     return render(request,tftp(subdir=lotus_page),c) 
 
 
 def lotus_page_delete(request):
-    c=cpl(request,app_name="Lotus Admin",page_name="Page")
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Page")
     return render(request,tftp(subdir=lotus_page),c) 
 ######### END PAGE #########
 
 
 ######### START GROUPS #########
 def lotus_group_list(request):
-    c=cpl(request,operation='-c',app_name=app_name)
-    c['form']=PageForm()
-    c['list']=Page.objects.all()
-    return render(request,tftp(subdir=lotus_page),c) 
+    c=cpl(request,nav_list=nav_list(),operation='-c',app_name=app_name)
+    c['form']=GroupForm()
+    c['list']=Group.objects.all()
+    return render(request,tftp(subdir=lotus_group),c) 
 
 
 def lotus_group_add(request):
     if request.method=="POST":
-        form=PageForm(request.POST)
+        form=GroupForm(request.POST)
         if form.is_valid():
             form.save()
         else:
             print(form.errors)
-    return redirect('lotus_page_list') 
+    return redirect('lotus_group_list') 
 
 
-def lotus_group_details(request):
-    c=cpl(request,app_name="Lotus Admin",page_name="Page")
-    return render(request,tftp(subdir=lotus_page),c) 
+def lotus_group_details(request,id):
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Groups")
+    details=Group.objects.get(id=id)
+    group_app_list=GroupApp.objects.filter(group=details)
+    app_list = [item['app'] for item in group_app_list.values('app')]
+    page_list=Page.objects.filter(app__in=app_list)
+    page_value_list=[item['id'] for item in page_list.values('id')]
+
+    c['group_app_form']=GroupAppForm()
+    c['group_page_form']=GroupPageForm(apps=app_list)
+    
+    c['group_app_list']=group_app_list
+    c['group_page_list']=page_list
+    c['details']=details
+    
+    return render(request,tftp(subdir=lotus_group),c) 
+
+
+def lotus_group_app_add(request,group):
+    if request.method=="POST":
+        form=GroupAppForm(request.POST)
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.group_id=group
+            instance.save()
+        else:
+            print(form.errors)
+    return redirect('lotus_group_details',group) 
+
+
+def lotus_group_page_add(request,group):
+    if request.method=="POST":
+        form=GroupPageForm(request.POST)
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.group_id=group
+            instance.save()
+        else:
+            print(form.errors)
+    return redirect('lotus_group_details',group) 
+
+def lotus_group_app_delete(request,group,app):
+    instance=GroupApp.objects.get(id=app)
+    instance.delete()
+    return redirect('lotus_group_details',group) 
 
 def lotus_group_update(request):
-    c=cpl(request,app_name="Lotus Admin",page_name="Page")
-    return render(request,tftp(subdir=lotus_page),c) 
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Groups")
+    return render(request,tftp(subdir=lotus_group),c) 
+
 
 
 def lotus_group_delete(request):
-    c=cpl(request,app_name="Lotus Admin",page_name="Page")
-    return render(request,tftp(subdir=lotus_page),c) 
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Groups")
+    return render(request,tftp(subdir=lotus_group),c) 
 ######### END GROUPS #########
+
+
+
 
 
 

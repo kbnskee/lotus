@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="lotus-card-dark mb-3">
         <div class="lotus-card-header-dark">
-            {{page.name}}
+            Add New Page
         </div>
         <div class="lotus-card-body-dark">
             <div class="card-body">
@@ -45,7 +45,7 @@
 <div class="container-fluid">
     <div class="lotus-card-dark mb-3">
         <div class="lotus-card-header-dark">
-            Application List
+            Page List
         </div>
         <div class="lotus-card-body-dark">
             <table>
@@ -61,8 +61,8 @@
                 <tbody>
                     {% for ea in list %}
                     <tr>
-                        <td style="border: 1px solid #636363;"><a href="" style="color: #aaa;">{{ ea.id }}</a></td>
-                        <td style="border: 1px solid #636363;"><a href="" style="color: #aaa;">{{ea.app.id}} - {{ ea.app.name }}</a></td>
+                        <td style="border: 1px solid #636363;"><a href="{% url 'lotus_page_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
+                        <td style="border: 1px solid #636363;"><a href="{% url 'lotus_app_details' ea.app.id %}" style="color: #aaa;">{{ea.app.id}} - {{ ea.app.name }}</a></td>
                         <td style="border: 1px solid #636363;">{{ ea.name }}</td>
                         <td style="border: 1px solid #636363;">{{ ea.status }}</td>
                         <td style="border: 1px solid #636363;">{% if ea.is_enabled %}Enabled{% elif not ea.is_enabled %}Disabled{% else %}Unknow{%endif%}</td>

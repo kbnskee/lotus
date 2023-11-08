@@ -85,6 +85,7 @@ class Page(models.Model):
         return self.name
 
 class Group(models.Model):
+    id              = models.IntegerField(primary_key=True)
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
     is_enabled      = models.BooleanField(default=False)
@@ -97,14 +98,14 @@ class Group(models.Model):
         return self.name
 
 
-class AppGroup(models.Model):
-    group=models.ForeignKey(Group,null=True,on_delete=models.SET_NULL)  
+class GroupApp(models.Model):
+    group=models.ForeignKey(Group, null=True,on_delete=models.SET_NULL)  
     app=models.ForeignKey(App,null=True,on_delete=models.SET_NULL)
 
 
-class PageGroup(models.Model):
+class GroupPage(models.Model):
     group=models.ForeignKey(Group,null=True,on_delete=models.SET_NULL)  
-    page=models.ForeignKey(Page,null=True,on_delete=models.SET_NULL)
+    page=models.ForeignKey(Page,null=True,on_delete=models.SET_NULL)    
 
 
 class UserGroup(models.Model):
