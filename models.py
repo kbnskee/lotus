@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver as re
-
+from django.utils.text import slugify
 
 from datetime import datetime
 
@@ -61,6 +61,7 @@ class App(models.Model):
     id              = models.IntegerField(primary_key=True)
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
+    url             = models.CharField(max_length=225,unique=True,blank=True,null=True)
     is_enabled      = models.BooleanField(default=False)
     created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
     updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
@@ -69,20 +70,30 @@ class App(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class Page(models.Model):
-    id              = models.IntegerField(primary_key=True)
-    app             = models.ForeignKey(App,null=True,blank=True,on_delete=models.SET_NULL)
-    name            = models.CharField(max_length=225,unique=True)
-    description     = models.CharField(max_length=225,blank=True,null=True)
-    is_enabled      = models.BooleanField(default=False)
-    created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
-    updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
-    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="page_created_by")
-    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="page_updated_by")
+    id                  = models.IntegerField(primary_key=True)
+    app                 = models.ForeignKey(App,null=True,blank=True,on_delete=models.SET_NULL)
+    name                = models.CharField(max_length=225,unique=True)
+    description         = models.CharField(max_length=225,blank=True,null=True)
+    slug                = models.SlugField(unique=True, blank=True,null=True)
+    url                 = models.CharField(max_length=225,unique=True,blank=True,null=True)
+    is_enabled          = models.BooleanField(default=False)
+    is_action_button    = models.BooleanField(default=False)
+    created_date        = models.DateTimeField(auto_now_add = True,blank=True,null=True)
+    updated_date        = models.DateTimeField(auto_now = True,blank=True,null=True)
+    created_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="page_created_by")
+    updated_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="page_updated_by")
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+        
 
 class Group(models.Model):
     id              = models.IntegerField(primary_key=True)
@@ -111,7 +122,6 @@ class GroupPage(models.Model):
 class UserGroup(models.Model):
     user            = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
     group           = models.ForeignKey(Group,null=True,on_delete=models.SET_NULL,related_name="group")
-    is_enabled      = models.BooleanField(default=False)
     created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
     updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
     created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="user_group_created_by")

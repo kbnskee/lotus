@@ -1,5 +1,5 @@
 from django import forms
-from lotus.models import App, Page, Group, GroupApp, GroupPage
+from lotus.models import App, Page, Group, GroupApp, GroupPage, UserGroup
 
 
 class PaginatedSearchForm(forms.Form):
@@ -85,7 +85,7 @@ class GroupForm(forms.ModelForm):
         widgets['is_enabled']=forms.Select(attrs={
             'class':'form-control form-control-sm border-1 border-dark',
             'style':'background-color:#636363; color:#ccc;'
-        },choices=[(True, 'Enabled'), (False, 'Disabled')])        
+        },choices=[(True, 'Enabled'), (False, 'Disabled')])
 
 
 class GroupAppForm(forms.ModelForm):
@@ -115,6 +115,20 @@ class GroupPageForm(forms.ModelForm):
                 'class':'form-control form-control-sm border-1 border-dark',
                 'style':'background-color:#636363; color:#ccc;'})
             )
+
+
+class UserGroupForm(forms.ModelForm):
+    class Meta:
+        model=UserGroup
+        fields=['group']
+
+        widgets={}
+        widgets['group']=forms.Select(attrs={
+            'class':'form-control form-control-sm',
+        })
+
+class ImportExcelForm(forms.Form):
+    file = forms.FileField()
 
 
 class ExcelImportForm(forms.Form):
