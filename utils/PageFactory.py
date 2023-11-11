@@ -10,6 +10,12 @@ from apps.common.views import common_logged_user as clu
 
 from lotus.sessions.session import USER_APPS, USER_PAGES, USER_DETAILS
 
+from lotus.api import (
+    get_user_group,
+    get_group_apps,
+    get_group_pages
+)
+
 
 ds="/"
 _split="_"
@@ -41,8 +47,27 @@ def create_page_name(page_info):
 
 
 
+
+def get_app_pages_by_user(user):
+    user_group=get_user_group(user)
+    group_apps=get_group_apps(user_group.group)
+    group_pages=get_group_pages(user_group.group)
+    return False
+
+
+
+
 def create_page_list(request=False,nav_list=False,operation="",page_name=False,app_name=False):
     clu_instance=clu(request.user.id)
+    user_group=get_user_group(request.user)
+    user_apps=get_group_apps(group=user_group.group)
+    user_pages=get_group_pages(group=user_group.group)
+    print(f"user_group: {user_group}")
+    
+    for apps in user_apps:
+        print(f"user_apps: {apps.app}")
+    for pages in user_pages:
+        print(f"user_pages: {pages.page}")
     c={}
     lts_page_name={}
     if not page_name:

@@ -128,7 +128,7 @@ class UserGroup(models.Model):
     updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="user_group_updated_by")
 
     def __str__(self):
-        return f"{self.group.name} {self.user.id}"  
+        return f"{self.user.id} - {self.group.name}"  
     
     
 class Role(models.Model):
