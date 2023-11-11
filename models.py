@@ -77,8 +77,7 @@ class Page(models.Model):
     app                 = models.ForeignKey(App,null=True,blank=True,on_delete=models.SET_NULL)
     name                = models.CharField(max_length=225,unique=True)
     description         = models.CharField(max_length=225,blank=True,null=True)
-    slug                = models.SlugField(unique=True, blank=True,null=True)
-    url                 = models.CharField(max_length=225,unique=True,blank=True,null=True)
+    path                = models.CharField(max_length=225,unique=True,blank=True,null=True)
     is_enabled          = models.BooleanField(default=False)
     is_action_button    = models.BooleanField(default=False)
     created_date        = models.DateTimeField(auto_now_add = True,blank=True,null=True)
@@ -88,11 +87,6 @@ class Page(models.Model):
 
     def __str__(self):
         return self.name
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
         
 
 class Group(models.Model):

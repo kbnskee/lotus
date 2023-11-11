@@ -7,33 +7,38 @@
         <div class="lotus-card-header-dark">
             Application Details
         </div>
-        <div class="lotus-card-body-dark">
-            <div class="card-body">
-                <div class="row mt-2">
-                    <div class="col-2 text-end" style="color: #aaa;">ID: </div>
-                    <div class="col-10" style="color: #aaa;">{{details.id}}</div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-2 text-end" style="color: #aaa;">Name: </div>
-                    <div class="col-10" style="color: #aaa;">{{details.name}}</div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-2 text-end" style="color: #aaa;">Description: </div>
-                    <div class="col-10" style="color: #aaa;">{{details.description}}</div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-2 text-end" style="color: #aaa;">Status: </div>
-                    <div class="col-10" style="color: #aaa;">{{details.is_enabled}}</div>
-                </div>
-            </div>
-        </div>
-        <div class="lotus-card-header-dark">
-            <div class="row">
-                <div class="col text-end">
-                    <a class="btn btn-sm btn-secondary py-0" href="{% url 'lotus_app_update' details.id %}" >Update</a>
+        <form action="{% url 'lotus_app_update' details.id %}" method="post">{% csrf_token %}
+            <div class="lotus-card-body-dark">
+                <div class="card-body">
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">ID: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.id}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.name}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Description: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.description}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Status: </div>
+                        <div class="col-10" style="color: #aaa;">{{form.is_enabled}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="lotus-card-header-dark">
+                <div class="row">
+                    <div class="col-2">
+                        <button class="btn btn-sm btn-success py-0" type="submit">Save</button>
+                    </div>
+                    <div class="col-10 text-end">
+                        <a class="btn btn-sm btn-danger py-0" href="{% url 'lotus_app_details' details.id %}">X</a>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 

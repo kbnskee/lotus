@@ -35,10 +35,34 @@ class AppForm(forms.ModelForm):
         },choices=[(True, 'Enabled'), (False, 'Disabled')])
 
 
+class AppUpdateForm(forms.ModelForm):
+    class Meta:
+        model=App
+        fields=['id','name','description','is_enabled','updated_by']
+
+        widgets={}
+        widgets['id']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['name']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['description']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['is_enabled']=forms.Select(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        },choices=[(True, 'Enabled'), (False, 'Disabled')])
+
+
 class PageForm(forms.ModelForm):
     class Meta:
         model=Page
-        fields=['id','app','name','description','is_enabled','created_by']
+        fields=['id','app','name','description','path','is_enabled','created_by']
 
         widgets={}
         widgets['app']=forms.Select(attrs={
@@ -54,6 +78,42 @@ class PageForm(forms.ModelForm):
             'style':'background-color:#636363; color:#ccc;'
         })
         widgets['description']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['path']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['is_enabled']=forms.Select(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        },choices=[(True, 'Enabled'), (False, 'Disabled')])
+
+
+class PageUpdateForm(forms.ModelForm):
+    class Meta:
+        model=Page
+        fields=['id','app','name','description','path','is_enabled','updated_by']
+
+        widgets={}
+        widgets['app']=forms.Select(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['id']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['name']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['description']=forms.TextInput(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+        widgets['path']=forms.TextInput(attrs={
             'class':'form-control form-control-sm border-1 border-dark',
             'style':'background-color:#636363; color:#ccc;'
         })

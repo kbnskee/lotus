@@ -27,12 +27,22 @@
                         <div class="col-10" style="color: #aaa;">{{details.description}}</div>
                     </div>
                     <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">path: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.path}}</div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="col-2 text-end" style="color: #aaa;">Status: </div>
                         <div class="col-10" style="color: #aaa;">{{details.is_enabled}}</div>
                     </div>
              
                 </form>
-                
+            </div>
+        </div>
+        <div class="lotus-card-header-dark">
+            <div class="row">
+                <div class="col text-end">
+                    <a class="btn btn-sm btn-secondary py-0" href="{% url 'lotus_page_update' details.id %}" >Update</a>
+                </div>
             </div>
         </div>
     </div>

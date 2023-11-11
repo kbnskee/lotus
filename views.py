@@ -13,7 +13,12 @@ from lotus.utils.PageFactory import (
 
 from lotus.models import App, Page, Group, GroupApp, GroupPage
 
-from lotus.forms import AppForm, PageForm, GroupForm, GroupAppForm, GroupPageForm, ExcelImportForm
+from lotus.forms import (
+    AppForm, AppUpdateForm,
+    PageForm, PageUpdateForm, 
+    GroupForm, GroupAppForm, GroupPageForm, 
+    ExcelImportForm
+    )
 
 app_name = "Lotus Admin"
 lotus_app='app'
@@ -67,15 +72,31 @@ def lotus_app_details(request,id):
     c=cpl(request,nav_list=nav_list(),app_name=app_name)
     details=App.objects.get(id=id)
     list=Page.objects.filter(app=details)
-    
     c['details']=details
     c['list']=list    
     c['app_group_list']=GroupApp.objects.filter(app=details)
     return render(request,tftp(subdir=lotus_app),c) 
 
 
-def lotus_app_update(request):
+
+def lotus_app_update(request,id):
     c=cpl(request,nav_list=nav_list(),app_name=app_name)
+    details=App.objects.get(id=id)
+    list=Page.objects.filter(app=details)
+    if request.method=="POST":
+        form=PageUpdateForm(request.POST, instance=details)
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.updated_by=request.user
+            instance.save()
+            return redirect('lotus_app_details',id)
+        else:
+            print(form.errors)
+    else:
+        c['form']=AppUpdateForm(instance=details)
+    c['details']=details
+    c['list']=list    
+    c['app_group_list']=GroupApp.objects.filter(app=details)
     return render(request,tftp(subdir=lotus_app),c) 
 
 
@@ -106,11 +127,25 @@ def lotus_page_add(request):
 def lotus_page_details(request,id):
     c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Page")
     details=Page.objects.get(id=id)
+    
     c['details']=details
     return render(request,tftp(subdir=lotus_page),c) 
 
-def lotus_page_update(request):
+def lotus_page_update(request,id):
     c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="Page")
+    details=Page.objects.get(id=id)
+    if request.method=="POST":
+        form=PageUpdateForm(request.POST,instance=details)
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.updated_by=request.user
+            instance.save()
+            return redirect('lotus_page_details',id)
+        else:
+            print(form.errors)
+    else:
+        c['form']=PageUpdateForm(instance=details)
+    c['details']=details
     return render(request,tftp(subdir=lotus_page),c) 
 
 
