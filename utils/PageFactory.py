@@ -49,6 +49,7 @@ def create_page_name(page_info):
 
 
 def get_app_pages_by_user(user):
+    payload={}
     user_group=get_user_group(user)
     group_apps=get_group_apps(user_group.group)
     group_pages=get_group_pages(user_group.group)
