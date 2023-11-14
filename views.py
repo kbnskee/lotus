@@ -255,6 +255,10 @@ def lotus_user_employee_details(request,id):
     c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="User")
     details=User.objects.prefetch_related('usergroup_set','employee').get(id=id)
     c['details']=details
+    group_apps=GroupApp.objects.filter(group__in=[user_group.group for user_group in details.usergroup_set.all()])
+    group_pages=GroupPage.objects.filter(group__in=[user_group.group for user_group in details.usergroup_set.all()])
+    c['group_apps']=group_apps
+    c['group_pages']=group_pages
     if request.method=="POST":
         print("POST")
         form=UserGroupForm(request.POST)

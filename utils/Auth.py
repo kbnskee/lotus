@@ -29,9 +29,16 @@ def sentry(function):
             if str(view)=='loginms_login' or str(view)=='loginms_register' or str(view)=='loginms_forgot_password':
                 return redirect('homems_home')                    
             else:
-                if app in USER_APPS:
+                _user_group=UserGroup.objects.get(user=request.user)
+                print(_user_group)
+                _user_apps=list(GroupApp.objects.filter(group=_user_group.group).values_list('app__name', flat=True))
+                print(_user_apps)
+                _user_pages=list(GroupPage.objects.filter(group=_user_group.group).values_list('page__name', flat=True))
+                print(_user_pages)
+   
+                if app in _user_apps:
                     print(page)
-                    if page in USER_PAGES:
+                    if page in _user_pages:
                         print(page)
                         return function(request,*args,**kwargs)
                     else:

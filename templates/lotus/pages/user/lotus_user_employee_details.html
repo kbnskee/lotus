@@ -68,7 +68,8 @@
         </div>
     </div>
 </section>
-<!-- 
+
+
 <section>
     <div class="container-fluid">
         <div class="lotus-card-dark mb-3">
@@ -77,18 +78,9 @@
             </div>
             <div class="lotus-card-body-dark">
                 <div class="card-body">
-                    <div class="row mt-2">
-                        <div class="col-2 text-end" style="color: #aaa;">Current Group: </div>
-                        <div class="col-10">{{details.usergroup}}</div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-2 text-end" style="color: #aaa;">Select New Group: </div>
-                        <div class="col-10">{{user_group_form.group}}</div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-2 text-end" style="color: #aaa;"></div>
-                        <div class="col-10" style="color: #aaa;"><a href="" class="btn btn-sm btn-secondary py-0" >Update</a></div>
-                    </div>
+                    {% for apps in group_apps %}
+                        {{apps.app.name}}
+                    {% endfor %}
                 </div>
             </div>
             <div class="lotus-card-header-dark">
@@ -102,8 +94,6 @@
 </section>
 
 
-
-
 <section>
     <div class="container-fluid">
         <div class="lotus-card-dark mb-3">
@@ -112,18 +102,9 @@
             </div>
             <div class="lotus-card-body-dark">
                 <div class="card-body">
-                    <div class="row mt-2">
-                        <div class="col-2 text-end" style="color: #aaa;">Current Group: </div>
-                        <div class="col-10">{{details.usergroup}}</div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-2 text-end" style="color: #aaa;">Select New Group: </div>
-                        <div class="col-10">{{user_group_form.group}}</div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-2 text-end" style="color: #aaa;"></div>
-                        <div class="col-10" style="color: #aaa;"><a href="" class="btn btn-sm btn-secondary py-0" >Update</a></div>
-                    </div>
+                    {% for pages in group_pages %}
+                        {{pages.page.name}}
+                    {% endfor %}
                 </div>
             </div>
             <div class="lotus-card-header-dark">
@@ -134,7 +115,7 @@
             </div>
         </div>
     </div>
-</section> -->
+</section>
 
 
 {% endblock content %}
