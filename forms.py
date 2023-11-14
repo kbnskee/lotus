@@ -187,6 +187,11 @@ class UserGroupForm(forms.ModelForm):
             'class':'form-control form-control-sm',
         })
 
+
+class ModelUploadForm(forms.Form):
+    file = forms.FileField()      
+
+
 class ImportExcelForm(forms.Form):
     file = forms.FileField()
 

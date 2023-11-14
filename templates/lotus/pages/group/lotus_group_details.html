@@ -99,17 +99,17 @@
                 <thead>
                     <tr>
                         <th style="width: 63px; border: 1px solid #636363;">ID</th>
-                        <th style="width: 270px; border: 1px solid #636363;">Name</th>
-                        <th style="width: 270px; border: 1px solid #636363;">Description</th>
+                        <th style="width: 270px; border: 1px solid #636363;">App</th>
+                        <th style="width: 270px; border: 1px solid #636363;">Page</th>
                         <th style="width: 90px; border: 1px solid #636363;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for ea in list %}
+                    {% for ea in group_page_list %}
                     <tr>
                         <td style="border: 1px solid #636363;"><a href="{% url 'lotus_page_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
-                        <td style="border: 1px solid #636363;">{{ ea.name }}</td>
-                        <td style="border: 1px solid #636363;">{{ ea.status }}</td>
+                        <td style="border: 1px solid #636363;">{{ ea.page.app }}</td>
+                        <td style="border: 1px solid #636363;">{{ ea.page }}</td>
                         <td style="border: 1px solid #636363;">{% if ea.is_enabled %}Enabled{% elif not ea.is_enabled %}Disabled{% else %}Unknow{%endif%}</td>
                     </tr>
                     {% endfor %}

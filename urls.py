@@ -19,6 +19,7 @@ from lotus.views import (
     
 
     lotus_importer,
+    lotus_404,
 )
 
 urlpatterns=[
@@ -42,4 +43,6 @@ urlpatterns=[
     path('lts/group/<int:group>/app/<int:app>/delete/',lotus_group_app_delete,name='lotus_group_app_delete'),
 
     path('lts/importer/',lotus_importer,name='lotus_importer'),
+
+    path('warning/404/<str:violation>/<str:message>/',lotus_404,name="lotus_404")
 ]

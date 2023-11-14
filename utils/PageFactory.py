@@ -60,15 +60,15 @@ def get_app_pages_by_user(user):
 
 def create_page_list(request=False,nav_list=False,operation="",page_name=False,app_name=False):
     clu_instance=clu(request.user.id)
-    # user_group=get_user_group(request.user)
-    # user_apps=get_group_apps(group=user_group.group)
-    # user_pages=get_group_pages(group=user_group.group)
-    # print(f"user_group: {user_group}")
+    user_group=get_user_group(request.user)
+    # user_apps=get_group_apps(group=user_group)
+    # user_pages=get_group_pages(group=user_group)
+    print(f"user_group: {user_group}")
     
     # for apps in user_apps:
-        # print(f"user_apps: {apps.app}")
+    #     print(f"user_apps: {apps.app}")
     # for pages in user_pages:
-        # print(f"user_pages: {pages.page}")
+    #     print(f"user_pages: {pages.page}")
     c={}
     lts_page_name={}
     if not page_name:

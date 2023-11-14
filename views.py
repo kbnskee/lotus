@@ -17,7 +17,7 @@ from lotus.forms import (
     AppForm, AppUpdateForm,
     PageForm, PageUpdateForm, 
     GroupForm, GroupAppForm, GroupPageForm, 
-    ExcelImportForm
+    ExcelImportForm,
     )
 
 app_name = "Lotus Admin"
@@ -179,13 +179,14 @@ def lotus_group_details(request,id):
     group_app_list=GroupApp.objects.filter(group=details)
     app_list = [item['app'] for item in group_app_list.values('app')]
     page_list=Page.objects.filter(app__in=app_list)
+    group_page_list=GroupPage.objects.filter(group=details)
     page_value_list=[item['id'] for item in page_list.values('id')]
 
     c['group_app_form']=GroupAppForm()
     c['group_page_form']=GroupPageForm(apps=app_list)
     
     c['group_app_list']=group_app_list
-    c['group_page_list']=page_list
+    c['group_page_list']=group_page_list
     c['details']=details
     
     return render(request,tftp(subdir=lotus_group),c) 
@@ -204,8 +205,10 @@ def lotus_group_app_add(request,group):
 
 
 def lotus_group_page_add(request,group):
+    group_app_list=GroupApp.objects.filter(group=group)
+    app_list = [item['app'] for item in group_app_list.values('app')]
     if request.method=="POST":
-        form=GroupPageForm(request.POST)
+        form=GroupPageForm(request.POST,apps=app_list)
         if form.is_valid():
             instance=form.save(commit=False)
             instance.group_id=group
@@ -230,7 +233,8 @@ def lotus_group_delete(request):
     return render(request,tftp(subdir=lotus_group),c) 
 ######### END GROUPS #########
 
-
+######### START USER GROUPS #########
+######### END USER GROUPS #########
 
 
 
@@ -256,3 +260,10 @@ def lotus_importer(request):
     elif request.method=="GET":
         c['excel_importer_form']=ExcelImportForm()
     return render(request,tftp(subdir="importer"),c) 
+
+
+
+def lotus_404(request,violation,message):
+    c=cpl(request,app_name="Lotus",page_name="Access Violation")
+
+    return render(request,tftp(subdir="warning"),c) 
