@@ -1,5 +1,9 @@
 from django.urls import path
 from lotus.views import (
+    lotus_user_list,
+    lotus_user_employee_details,
+    lotus_user_student_details,
+
     lotus_app_list,
     lotus_app_add,
     lotus_app_details,
@@ -23,6 +27,11 @@ from lotus.views import (
 )
 
 urlpatterns=[
+    path('lts/user/list/',lotus_user_list,name='lotus_user_list'),
+    path('lts/user/employee/<int:id>/details/',lotus_user_employee_details,name='lotus_user_employee_details'),
+    path('lts/user/student/<int:id>/details/',lotus_user_student_details,name='lotus_user_student_details'),
+
+
     path('lts/app/list/',lotus_app_list,name='lotus_app_list'),
     path('lts/app/add/',lotus_app_add,name='lotus_app_add'),
     path('lts/app/<int:id>/details/',lotus_app_details,name='lotus_app_details'),
@@ -42,7 +51,9 @@ urlpatterns=[
     path('lts/group/<int:group>/page/add/',lotus_group_page_add,name='lotus_group_page_add'),
     path('lts/group/<int:group>/app/<int:app>/delete/',lotus_group_app_delete,name='lotus_group_app_delete'),
 
+
     path('lts/importer/',lotus_importer,name='lotus_importer'),
+
 
     path('warning/404/<str:violation>/<str:message>/',lotus_404,name="lotus_404")
 ]

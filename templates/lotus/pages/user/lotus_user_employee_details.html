@@ -1,0 +1,140 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+    <div class="container-fluid">
+        <div class="lotus-card-dark mb-3">
+            <div class="lotus-card-header-dark">
+                User Details
+            </div>
+            <div class="lotus-card-body-dark">
+                <div class="card-body">
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">ID: </div>
+                        <div class="col-10" style="color: #aaa;">{{details.id}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                        <div class="col-10" style="color: #aaa;">{% if details.employee %} {{details.employee}} {% elif details.student %} {{details.student}} {% endif %}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Role: </div>
+                        <div class="col-10" style="color: #aaa;">{% if details.employee %} {{details.employee.role}} {% elif details.student %} {{details.student.role}} {% endif %}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="lotus-card-header-dark">
+                <div class="row">
+                    <div class="col text-end">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="container-fluid">
+        <div class="lotus-card-dark mb-3">
+            <div class="lotus-card-header-dark">
+                Group Details
+            </div>
+            <form action="" method="post">{% csrf_token %}
+                <div class="lotus-card-body-dark">
+                    <div class="card-body">
+                        <div class="row mt-2">
+                            <div class="col-2 text-end" style="color: #aaa;">Current Group: </div>
+                            <div class="col-10">{% for group in details.usergroup_set.all %} {{group}} {% endfor %}</div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-2 text-end" style="color: #aaa;">Select New Group: </div>
+                            <div class="col-10">{{user_group_form.group}}</div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-2 text-end" style="color: #aaa;"></div>
+                            <div class="col-10" style="color: #aaa;"><button class="btn btn-sm btn-secondary py-0" type="submit">Update</button></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="lotus-card-header-dark">
+                <div class="row">
+                    <div class="col text-end">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 
+<section>
+    <div class="container-fluid">
+        <div class="lotus-card-dark mb-3">
+            <div class="lotus-card-header-dark">
+                Group Application List
+            </div>
+            <div class="lotus-card-body-dark">
+                <div class="card-body">
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Current Group: </div>
+                        <div class="col-10">{{details.usergroup}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Select New Group: </div>
+                        <div class="col-10">{{user_group_form.group}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;"></div>
+                        <div class="col-10" style="color: #aaa;"><a href="" class="btn btn-sm btn-secondary py-0" >Update</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="lotus-card-header-dark">
+                <div class="row">
+                    <div class="col text-end">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section>
+    <div class="container-fluid">
+        <div class="lotus-card-dark mb-3">
+            <div class="lotus-card-header-dark">
+                Group Page List
+            </div>
+            <div class="lotus-card-body-dark">
+                <div class="card-body">
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Current Group: </div>
+                        <div class="col-10">{{details.usergroup}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;">Select New Group: </div>
+                        <div class="col-10">{{user_group_form.group}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2 text-end" style="color: #aaa;"></div>
+                        <div class="col-10" style="color: #aaa;"><a href="" class="btn btn-sm btn-secondary py-0" >Update</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="lotus-card-header-dark">
+                <div class="row">
+                    <div class="col text-end">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+
+{% endblock content %}

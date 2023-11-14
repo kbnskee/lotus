@@ -184,6 +184,21 @@ class UserGroupForm(forms.ModelForm):
 
         widgets={}
         widgets['group']=forms.Select(attrs={
+            'class':'form-control form-control-sm border-1 border-dark',
+            'style':'background-color:#636363; color:#ccc;'
+        })
+
+
+class UserGroupAddForm(forms.ModelForm):
+    class Meta:
+        model=UserGroup
+        fields=['group','user']
+
+        widgets={}
+        widgets['group']=forms.Select(attrs={
+            'class':'form-control form-control-sm',
+        })
+        widgets['user']=forms.Select(attrs={
             'class':'form-control form-control-sm',
         })
 

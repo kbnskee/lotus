@@ -4,6 +4,8 @@ from lotus.sessions.session import USER_APPS, USER_PAGES, USER_DETAILS
 from lotus.models import (
     User,
     UserGroup,
+    GroupApp,
+    GroupPage
 
 )
 
@@ -14,6 +16,7 @@ def sentry(function):
         app=view.split("_",1)[0]
         page=view
         user=request.user
+
 
         if str(user)=="AnonymousUser":
             return redirect('loginms_login')

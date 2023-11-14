@@ -11,13 +11,14 @@ from lotus.utils.PageFactory import (
     this_func_to_path as tftp
 )
 
-from lotus.models import App, Page, Group, GroupApp, GroupPage
+from lotus.models import User, UserGroup, App, Page, Group, GroupApp, GroupPage
 
 from lotus.forms import (
     AppForm, AppUpdateForm,
     PageForm, PageUpdateForm, 
     GroupForm, GroupAppForm, GroupPageForm, 
     ExcelImportForm,
+    UserGroupForm, UserGroupAddForm,
     )
 
 app_name = "Lotus Admin"
@@ -45,6 +46,12 @@ def nav_list():
             "state":"",
             "name":"Groups",
             "pathname":"lotus_group_list"
+            },
+        "lotus_user_list": {
+            "id":2,
+            "state":"",
+            "name":"System Users",
+            "pathname":"lotus_user_list"
             },
         }
     return nav_list
@@ -233,7 +240,55 @@ def lotus_group_delete(request):
     return render(request,tftp(subdir=lotus_group),c) 
 ######### END GROUPS #########
 
+
 ######### START USER GROUPS #########
+def lotus_user_list(request):
+    c=cpl(request,nav_list=nav_list(),app_name=app_name)
+    employee_list=User.objects.prefetch_related('usergroup_set','employee').all()
+    c['employee_list']=employee_list
+    student_list=User.objects.prefetch_related('usergroup_set','student').all()
+    c['student_list']=student_list
+    return render(request,tftp(subdir="user"),c) 
+
+
+def lotus_user_employee_details(request,id):
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="User")
+    details=User.objects.prefetch_related('usergroup_set','employee').get(id=id)
+    c['details']=details
+    if request.method=="POST":
+        print("POST")
+        form=UserGroupForm(request.POST)
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.user=details
+            instance.save()
+        else:
+            print(form.errors)
+        return redirect('lotus_user_employee_details',id)
+    elif request.method=="GET":
+        print("GET")
+        user_group_form=UserGroupForm()
+    c['user_group_form']=user_group_form
+    return render(request,tftp(subdir="user"),c) 
+
+def lotus_user_student_details(request,id):
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="User")
+
+    details=User.objects.prefetch_related('usergroup','student').get(id=id)
+    c['details']=details
+    return render(request,tftp(subdir="user"),c) 
+
+
+def lotus_user_update(request):
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="User")
+    return render(request,tftp(subdir=lotus_group),c) 
+
+
+def lotus_user_delete(request,group,app):
+    instance=GroupApp.objects.get(id=app)
+    instance.delete()
+    return redirect('lotus_group_details',group) 
+
 ######### END USER GROUPS #########
 
 

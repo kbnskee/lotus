@@ -1,0 +1,43 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="lotus-card-dark mb-3">
+        <div class="lotus-card-header-dark">
+            User Details
+        </div>
+        <div class="lotus-card-body-dark">
+            <div class="card-body">
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">ID: </div>
+                    <div class="col-10" style="color: #aaa;">{{details.id}}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Name: </div>
+                    <div class="col-10" style="color: #aaa;">{% if details.employee %} {{details.employee}} {% elif details.student %} {{details.student}} {% endif %}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Role: </div>
+                    <div class="col-10" style="color: #aaa;">{% if details.employee %} {{details.employee.role}} {% elif details.student %} {{details.student.role}} {% endif %}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-2 text-end" style="color: #aaa;">Group: </div>
+                    <div class="col-10" style="color: #aaa;">{{ details.usergroup }}</div>
+                </div>
+                
+             
+            </div>
+        </div>
+        <div class="lotus-card-header-dark">
+            <div class="row">
+                <div class="col text-end">
+                    <a class="btn btn-sm btn-secondary py-0" href="" >Update</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

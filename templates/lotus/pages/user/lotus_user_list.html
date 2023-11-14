@@ -1,0 +1,81 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+    <div class="container-fluid">
+        <div class="lotus-card-dark mb-3">
+            <div class="lotus-card-header-dark">
+                Employee User List
+            </div>
+            <div class="lotus-card-body-dark">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 63px; border: 1px solid #636363;">ID</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Username</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Role</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Group</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ea in employee_list %}
+                            {% if ea.employee %} 
+                                <tr>
+                                    <td style="border: 1px solid #636363;"><a href="{% url 'lotus_user_employee_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
+                                    <td style="border: 1px solid #636363;">{{ ea.username }}</td>
+                                    <td style="border: 1px solid #636363;">{{ea.employee.role}}</td>
+                                    <td style="border: 1px solid #636363;">{{ea.usergroup_set}}</td>
+                                    <td style="border: 1px solid #636363;">{{ea.employee}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container-fluid">
+        <div class="lotus-card-dark mb-3">
+            <div class="lotus-card-header-dark">
+                Student User List
+            </div>
+            <div class="lotus-card-body-dark">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 63px; border: 1px solid #636363;">ID</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Username</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Role</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Group</th>
+                            <th style="width: 270px; border: 1px solid #636363;">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ea in student_list %}
+                            {% if ea.student %} 
+                                <tr>
+                                    <td style="border: 1px solid #636363;"><a href="{% url 'lotus_user_student_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
+                                    <td style="border: 1px solid #636363;">{{ ea.username }}</td>
+                                    <td style="border: 1px solid #636363;">{{ea.student.role}}</td>
+                                    <td style="border: 1px solid #636363;">{{ea.usergroup_set}}</td>
+                                    <td style="border: 1px solid #636363;">{{ea.student}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{% endblock content %}

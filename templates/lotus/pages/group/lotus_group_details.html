@@ -101,7 +101,7 @@
                         <th style="width: 63px; border: 1px solid #636363;">ID</th>
                         <th style="width: 270px; border: 1px solid #636363;">App</th>
                         <th style="width: 270px; border: 1px solid #636363;">Page</th>
-                        <th style="width: 90px; border: 1px solid #636363;">Status</th>
+                        <th style="width: 90px; border: 1px solid #636363;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,7 +110,7 @@
                         <td style="border: 1px solid #636363;"><a href="{% url 'lotus_page_details' ea.id %}" style="color: #aaa;">{{ ea.id }}</a></td>
                         <td style="border: 1px solid #636363;">{{ ea.page.app }}</td>
                         <td style="border: 1px solid #636363;">{{ ea.page }}</td>
-                        <td style="border: 1px solid #636363;">{% if ea.is_enabled %}Enabled{% elif not ea.is_enabled %}Disabled{% else %}Unknow{%endif%}</td>
+                        <td style="border: 1px solid #636363;">Action</td>
                     </tr>
                     {% endfor %}
                 </tbody>
