@@ -9,6 +9,7 @@ from lotus.models import (
 
 )
 
+test="test"
 
 def sentry(function):
     def router(request, *args,**kwargs):
