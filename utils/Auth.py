@@ -34,7 +34,7 @@ def sentry(function):
                 print(_user_group)
                 _user_apps=list(GroupApp.objects.filter(group=_user_group.group).values_list('app__name', flat=True))
                 print(_user_apps)
-                _user_pages=list(GroupPage.objects.filter(group=_user_group.group).values_list('page__name', flat=True))
+                _user_pages=list(GroupPage.objects.filter(group=_user_group.group).values_list('page__path', flat=True))
                 print(_user_pages)
    
                 if app in _user_apps:
@@ -43,12 +43,14 @@ def sentry(function):
                         print(page)
                         return function(request,*args,**kwargs)
                     else:
+                        print("PAGE ACCESS ERROR")
                         return redirect(
                             'lotus_404',
                             'Page Access Error',
                             'You do not have access to this page. If you belive you should have access ti this page, please contac the IT Administrators'
                         )
                 else:
+                    print("APP ACCESS ERROR")
                     return redirect(
                         'lotus_404',
                         'App Access Error',

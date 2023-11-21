@@ -56,27 +56,40 @@ def get_app_pages_by_user(user):
     return False
 
 
+def extract_keys(nav_list, to_remain):
+    remaining_dict = {}
+
+    # Extract paths from to_remain queryset
+    paths_to_remain = {item.page.path for item in to_remain}
+
+    # Filter nav_list based on paths_to_remain
+    for key, value in nav_list.items():
+        if value.get("pathname") in paths_to_remain:
+            remaining_dict[key] = value
+
+    return remaining_dict
 
 
 def create_page_list(request=False,nav_list=False,operation="",page_name=False,app_name=False):
     clu_instance=clu(request.user.id)
     user_group=get_user_group(request.user)
+
     # user_apps=get_group_apps(group=user_group)
     # user_pages=get_group_pages(group=user_group)
-    print(f"user_group: {user_group}")
     
     # for apps in user_apps:
     #     print(f"user_apps: {apps.app}")
     # for pages in user_pages:
     #     print(f"user_pages: {pages.page}")
     c={}
+  
+    perm_nav_list={}
     lts_page_name={}
     if not page_name:
         curframe = inspect.currentframe()
         calframe = inspect.getouterframes(curframe, 2)
         subdir=str(calframe[1][3])
         parse_subdir=parse_to_page_info(subdir)
-        print(parse_subdir)
         lts_page_name=create_page_name(parse_subdir)
     elif page_name:
         lts_page_name=page_name        
@@ -84,14 +97,14 @@ def create_page_list(request=False,nav_list=False,operation="",page_name=False,a
         curframe = inspect.currentframe()
         calframe = inspect.getouterframes(curframe, 2)
         subdir=str(calframe[1][3])
-
+        print("START perm_nav_list")
+        perm_nav_list=extract_keys(nav_list, get_group_pages(user_group))
+        print("END perm_nav_list")
         
         if bool(nav_list.get(subdir,{})) == True:
             nav_list[subdir]['state']='active'
-            print(nav_list[subdir]['state'])
 
     if operation and operation[0] == '-':
-        print("Pass")
 
         if 'c' in operation:
             function_split=subdir.rsplit('_',1)
@@ -115,7 +128,7 @@ def create_page_list(request=False,nav_list=False,operation="",page_name=False,a
             c['list']=function_operation_details             
         
 
-    return {'nav_list':nav_list,
+    return {'nav_list':perm_nav_list,
             'page':{'name':lts_page_name,},
             'page_list':{'page_name':page_name,'app_name':app_name},
             'user_apps':USER_APPS,

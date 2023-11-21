@@ -7,8 +7,8 @@ def get_user_group(user):
 
 def get_group_apps(group): 
     _exists=GroupApp.objects.filter(group=group).exists()
-    return GroupApp.objects.filter(group=group).group if _exists else "UserGroup Empty"
+    return GroupApp.objects.filter(group=group) if _exists else "UserGroup Empty"
 
 def get_group_pages(group): 
     _exists=GroupPage.objects.filter(group=group).exists()
-    return GroupPage.objects.filter(group=group).group if _exists else "UserGroup Empty"
+    return GroupPage.objects.filter(group=group) if _exists else "UserGroup Empty"
