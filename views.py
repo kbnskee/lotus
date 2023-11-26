@@ -185,12 +185,14 @@ def lotus_group_details(request,id):
     details=Group.objects.get(id=id)
     group_app_list=GroupApp.objects.filter(group=details)
     app_list = [item['app'] for item in group_app_list.values('app')]
+    
     page_list=Page.objects.filter(app__in=app_list)
     group_page_list=GroupPage.objects.filter(group=details)
     page_value_list=[item['id'] for item in page_list.values('id')]
+    page_id_list=[item['page'] for item in group_page_list.values('page')]
 
-    c['group_app_form']=GroupAppForm()
-    c['group_page_form']=GroupPageForm(apps=app_list)
+    c['group_app_form']=GroupAppForm(apps=app_list)
+    c['group_page_form']=GroupPageForm(apps=app_list,pages=page_id_list)
     
     c['group_app_list']=group_app_list
     c['group_page_list']=group_page_list
@@ -200,8 +202,11 @@ def lotus_group_details(request,id):
 
 
 def lotus_group_app_add(request,group):
+    details=Group.objects.get(id=group)
+    group_app_list=GroupApp.objects.filter(group=details)
+    app_list = [item['app'] for item in group_app_list.values('app')]
     if request.method=="POST":
-        form=GroupAppForm(request.POST)
+        form=GroupAppForm(request.POST,apps=app_list)
         if form.is_valid():
             instance=form.save(commit=False)
             instance.group_id=group
@@ -213,9 +218,15 @@ def lotus_group_app_add(request,group):
 
 def lotus_group_page_add(request,group):
     group_app_list=GroupApp.objects.filter(group=group)
+    details=Group.objects.get(id=group)
+    group_app_list=GroupApp.objects.filter(group=details)
     app_list = [item['app'] for item in group_app_list.values('app')]
+    
+    group_page_list=GroupPage.objects.filter(group=details)
+    page_value_list=[item['id'] for item in group_page_list.values('id')]
+    
     if request.method=="POST":
-        form=GroupPageForm(request.POST,apps=app_list)
+        form=GroupPageForm(request.POST,apps=app_list,pages=page_value_list)
         if form.is_valid():
             instance=form.save(commit=False)
             instance.group_id=group

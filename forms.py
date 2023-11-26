@@ -149,6 +149,7 @@ class GroupForm(forms.ModelForm):
 
 
 class GroupAppForm(forms.ModelForm):
+    
     class Meta:
         model=GroupApp
         fields=['app']
@@ -159,22 +160,28 @@ class GroupAppForm(forms.ModelForm):
             'class':'form-control form-control-sm border-1 border-dark',
             'style':'background-color:#636363; color:#ccc;'
         })
+    def __init__(self, *args, **kwargs):
+        app_list = kwargs.pop('apps')
+        super(GroupAppForm, self).__init__(*args, **kwargs)
+        self.fields['app'].queryset = App.objects.exclude(id__in=app_list)
+    
 
 
 class GroupPageForm(forms.ModelForm):
     class Meta:
         model=GroupPage
         fields=['page']
-    def __init__(self,*args,**kwargs):
+    def __init__(self, *args, **kwargs):
         app_list = kwargs.pop('apps')
-        print(app_list)
-        super().__init__(*args, **kwargs)
-        self.fields['page'] = forms.ModelChoiceField(
-            queryset=Page.objects.filter(app_id__in=app_list),
-            widget=forms.Select(attrs={
-                'class':'form-control form-control-sm border-1 border-dark',
-                'style':'background-color:#636363; color:#ccc;'})
-            )
+        page_list = kwargs.pop('pages')
+        super(GroupPageForm, self).__init__(*args, **kwargs)
+        print(f"app list: {app_list}")
+        print(f"page list: {page_list}")
+
+        app_pages=Page.objects.filter(app__in=app_list)
+        pages=app_pages.exclude(id__in=page_list)
+        self.fields['page'].queryset = pages
+        
 
 
 class UserGroupForm(forms.ModelForm):
@@ -187,6 +194,7 @@ class UserGroupForm(forms.ModelForm):
             'class':'form-control form-control-sm border-1 border-dark',
             'style':'background-color:#636363; color:#ccc;'
         })
+        
 
 
 class UserGroupAddForm(forms.ModelForm):
