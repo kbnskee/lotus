@@ -99,6 +99,7 @@ def create_page_list(request=False,nav_list=False,operation="",page_name=False,a
         subdir=str(calframe[1][3])
         print("START perm_nav_list")
         perm_nav_list=extract_keys(nav_list, get_group_pages(user_group))
+        # perm_nav_list = _perm_nav_list if _perm_nav_list is not None else {}
         print("END perm_nav_list")
         
         if bool(nav_list.get(subdir,{})) == True:
