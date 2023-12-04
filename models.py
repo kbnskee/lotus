@@ -172,8 +172,8 @@ class FamilyRelationshipType(models.Model):
     is_enabled      = models.BooleanField(default=False)
     created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
     updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
-    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="family_relationship_type_created_by")
-    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="family_relationship_type_updated_by")
+    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="lotus_family_relationship_type_created_by")
+    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="lotus_family_relationship_type_updated_by")
 
     def __str__(self):
         return self.name      
@@ -243,6 +243,19 @@ class ActivityType(models.Model):
 
     def __str__(self):
         return self.name      
+    
+
+class EducationalLevel(models.Model):
+    name                = models.CharField(max_length=225,unique=True)
+    description         = models.CharField(max_length=225,blank=True,null=True)
+    is_enabled          = models.BooleanField(default=False)
+    created_date        = models.DateTimeField(auto_now_add = True,blank=True,null=True)
+    updated_date        = models.DateTimeField(auto_now = True,blank=True,null=True)
+    created_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="lotus_educational_level_created_by")
+    updated_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="lotus_educational_level_updated_by")
+
+    def __str__(self):
+        return self.name    
 
 
 class ActivityLog(models.Model):

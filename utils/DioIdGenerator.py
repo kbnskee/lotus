@@ -10,6 +10,8 @@ def employee_id_generator(school_id, role_id, id):
     school_id=str(school_id)
     role_id=str(role_id)
     id=str(id)
-    dio=str(current_datetime.year % 100)+"-"+str(school_id.zfill(2))+str(role_id.zfill(2))+"-"  +str(id.zfill(4))
+    dio=str(role_id)+str(school_id.zfill(2))+'-'+str(current_datetime.year % 100)+str(id.zfill(6))
+    #dio=str(current_datetime.year % 100)+"-"+str(school_id.zfill(2))+str(role_id.zfill(2))+"-"  +str(id.zfill(4))
+
     print(dio)
     return dio

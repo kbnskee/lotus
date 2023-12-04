@@ -10,8 +10,8 @@ from lotus.models import (
     App,
     Page,
     Group,
-    AppGroup,
-    PageGroup,
+    GroupApp,
+    GroupPage,
     UserGroup,
 )
 
@@ -30,6 +30,31 @@ class Command(BaseCommand):
 
         elif _arg=="clearbasedata":
             self.clear_tables()
+
+        elif _arg=="createsuperuser":
+            self.stdout.write("creating createsuperuser...")
+
+            if User.objects.filter(id=1,username="kadari").exists():
+                user_instance=User.objects.get(id=1,username="kadari")
+            else:
+                user=User(username="kadari")
+                user.set_password("kadari")
+                user.save()
+
+            if Group.objects.filter(id=1,name="superuser").exists():
+                group_instance=Group.objects.get(id=1,name="superuser")
+            else:
+                group=Group(id=1,name="kadari")
+                group.save()
+            
+            self.stdout.write("creating Group... OK")
+            
+            if UserGroup.objects.filter(id=1,user_id=1,group_id=1).exists():
+                self.stdout.write("Superuser already exists... Exiting")
+            else:
+                user_group=UserGroup.objects.create(id=1,user=user_instance,group=group_instance)
+                user_group.save()
+                self.stdout.write("creating createsuperuser... OK")
 
         elif _arg=="updatebasedata":
             self.stdout.write("Initializing updatebasedata...")
@@ -59,11 +84,11 @@ class Command(BaseCommand):
 
             apps=App.objects.filter()
             for app in apps:
-                AppGroup.objects.create(group=group_instance,app=app)
+                GroupApp.objects.create(group=group_instance,app=app)
                 self.stdout.write(f"creating AppGroup {app}... OK")
             pages=Page.objects.filter()
             for page in pages:
-                PageGroup.objects.create(group=group_instance,page=page)
+                GroupPage.objects.create(group=group_instance,page=page)
                 self.stdout.write(f"creating PageGroup {page}... OK")
 
             self.stdout.write("loadbasedata... OK")
