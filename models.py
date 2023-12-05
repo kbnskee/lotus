@@ -118,7 +118,7 @@ class GroupPage(models.Model):
 
 
 class UserGroup(models.Model):
-    id              = models.IntegerField(primary_key=True)
+    # id              = models.IntegerField(primary_key=True)
     user            = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
     group           = models.ForeignKey(Group,null=True,on_delete=models.SET_NULL)
     created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)

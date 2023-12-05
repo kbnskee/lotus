@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
 
-import pandas as pd
+# import pandas as pd
 
-import openpyxl
 
 from django.db.models import Q
 
@@ -314,21 +313,21 @@ na_values = ['NA', 'na', 'N/A', 'n/a', '', 'NULL', 'null','nan']
 def lotus_importer(request):
     from apps.conductms.models import ConductType,ConductCriteria
     c=cpl(request,app_name="Lotus Admin",page_name="Lotus Importer Page")
-    if request.method=="POST":
-        form=ExcelImportForm(request.POST,request.FILES)
-        if form.is_valid():
-            model=form.cleaned_data['model']
-            excel_file=request.FILES['file']
-            data=pd.read_excel(excel_file,engine='openpyxl',sheet_name=model)
-            for index, row in data.iterrows():
-                instance=eval(model + "()")
-                for field in data.columns:
-                    setattr(instance,field,row[field])
-                instance.save()    
-        else:
-            print(form.errors)
-    elif request.method=="GET":
-        c['excel_importer_form']=ExcelImportForm()
+    # if request.method=="POST":
+    #     form=ExcelImportForm(request.POST,request.FILES)
+    #     if form.is_valid():
+    #         model=form.cleaned_data['model']
+    #         excel_file=request.FILES['file']
+    #         data=pd.read_excel(excel_file,engine='openpyxl',sheet_name=model)
+    #         for index, row in data.iterrows():
+    #             instance=eval(model + "()")
+    #             for field in data.columns:
+    #                 setattr(instance,field,row[field])
+    #             instance.save()    
+    #     else:
+    #         print(form.errors)
+    # elif request.method=="GET":
+    #     c['excel_importer_form']=ExcelImportForm()
     return render(request,tftp(subdir="importer"),c) 
 
 
