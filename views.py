@@ -51,7 +51,7 @@ def nav_list():
             "state":"",
             "name":"System Users",
             "pathname":"lotus_user_list"
-            },
+            }
         }
     return nav_list
 
