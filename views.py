@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 
-# import pandas as pd
+#import pandas as pd
 
 
 from django.db.models import Q
