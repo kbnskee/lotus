@@ -21,7 +21,7 @@ from lotus.models import (
     BloodType,
     Suffix,
     Citizenship,
-    CivilStatus
+    CivilStatus,
 )
 
 base_dir=BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
@@ -284,9 +284,28 @@ class Command(BaseCommand):
         
         from apps.schoolms.apps import SchoolmsConfig
         from apps.companybasems.apps import CompanybasemsConfig
+        from apps.tuitionms.apps import TuitionmsConfig
+        from apps.teacher.apps import TeacherConfig
+        from apps.subjectms.apps import SubjectmsConfig
+        from apps.sectionms.apps import SectionmsConfig
+        from apps.itadmin.apps import ItadminConfig
+        from apps.gradems.apps import GrademsConfig
+        from apps.conductms.apps import ConductmsConfig
+
+
+
+
 
         self.__upload_app_models(SchoolmsConfig.name)
         self.__upload_app_models(CompanybasemsConfig.name)
+        self.__upload_app_models(TuitionmsConfig.name)
+        self.__upload_app_models(TeacherConfig.name)
+        self.__upload_app_models(SubjectmsConfig.name)
+        self.__upload_app_models(SectionmsConfig.name)
+        self.__upload_app_models(ItadminConfig.name)
+        self.__upload_app_models(GrademsConfig.name)
+        self.__upload_app_models(ConductmsConfig.name)
+
 
     def __upload_app_models(self,model):
         print(f"KDR: init-app. Upload Excel... {model} ")
