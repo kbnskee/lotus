@@ -57,6 +57,20 @@ class User(AbstractBaseUser):
         return self.username
 
 
+class Group(models.Model):
+    id              = models.IntegerField(primary_key=True)
+    name            = models.CharField(max_length=225,unique=True)
+    description     = models.CharField(max_length=225,blank=True,null=True)
+    is_enabled      = models.BooleanField(default=False)
+    created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
+    updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
+    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="group_created_by")
+    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="group_updated_by")
+
+    def __str__(self):
+        return self.name
+    
+    
 class App(models.Model):
     id              = models.IntegerField(primary_key=True)
     name            = models.CharField(max_length=225,unique=True)
@@ -93,18 +107,7 @@ class Page(models.Model):
         return self.name
         
 
-class Group(models.Model):
-    id              = models.IntegerField(primary_key=True)
-    name            = models.CharField(max_length=225,unique=True)
-    description     = models.CharField(max_length=225,blank=True,null=True)
-    is_enabled      = models.BooleanField(default=False)
-    created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
-    updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
-    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="group_created_by")
-    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="group_updated_by")
 
-    def __str__(self):
-        return self.name
 
 
 class GroupApp(models.Model):
@@ -118,7 +121,7 @@ class GroupPage(models.Model):
 
 
 class UserGroup(models.Model):
-    # id              = models.IntegerField(primary_key=True)
+    id              = models.IntegerField(primary_key=True)
     user            = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
     group           = models.ForeignKey(Group,null=True,on_delete=models.SET_NULL)
     created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
@@ -129,17 +132,19 @@ class UserGroup(models.Model):
     def __str__(self):
         return f"{self.user.id} - {self.group.name}"  
     
-    
-class Role(models.Model):
+
+class Gender(models.Model):
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
     is_enabled      = models.BooleanField(default=False)
     created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
     updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
-    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="role_created_by")
-    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="role_updated_by")
+    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="gender_created_by")
+    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="gender_updated_by")
 
-
+    def __str__(self):
+        return self.name    
+    
 class ContactType(models.Model):
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
@@ -166,6 +171,7 @@ class AddressType(models.Model):
         return self.name
     
 
+
 class FamilyRelationshipType(models.Model):
     name            = models.CharField(max_length=225,unique=True)
     description     = models.CharField(max_length=225,blank=True,null=True)
@@ -176,21 +182,7 @@ class FamilyRelationshipType(models.Model):
     updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="lotus_family_relationship_type_updated_by")
 
     def __str__(self):
-        return self.name      
-    
-
-class Gender(models.Model):
-    name            = models.CharField(max_length=225,unique=True)
-    description     = models.CharField(max_length=225,blank=True,null=True)
-    is_enabled      = models.BooleanField(default=False)
-    created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
-    updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
-    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="gender_created_by")
-    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="gender_updated_by")
-
-    def __str__(self):
         return self.name    
-    
 
 class BloodType(models.Model):
     name            = models.CharField(max_length=225,unique=True)
@@ -203,7 +195,7 @@ class BloodType(models.Model):
 
     def __str__(self):
         return self.name     
-    
+
 
 class Suffix(models.Model):
     name            = models.CharField(max_length=225,unique=True)
@@ -215,8 +207,9 @@ class Suffix(models.Model):
     updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="suffix_updated_by")
 
     def __str__(self):
-        return self.name        
+        return self.name    
     
+
 
 class Citizenship(models.Model):
     name                = models.CharField(max_length=225,unique=True)
@@ -229,8 +222,38 @@ class Citizenship(models.Model):
     updated_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="citizenship_updated_by")
 
     def __str__(self):
-        return self.name      
+        return self.name     
     
+
+class CivilStatus(models.Model):
+    name                = models.CharField(max_length=225,unique=True)
+    description         = models.CharField(max_length=225,blank=True,null=True)
+    is_enabled          = models.BooleanField(default=False)
+    created_date        = models.DateTimeField(auto_now_add = True,blank=True,null=True)
+    updated_date        = models.DateTimeField(auto_now = True,blank=True,null=True)
+    created_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="civil_status_created_by")
+    updated_by          = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="civil_status_updated_by")
+
+    def __str__(self):
+        return self.name     
+    
+
+
+
+
+
+class Role(models.Model):
+    name            = models.CharField(max_length=225,unique=True)
+    description     = models.CharField(max_length=225,blank=True,null=True)
+    is_enabled      = models.BooleanField(default=False)
+    created_date    = models.DateTimeField(auto_now_add = True,blank=True,null=True)
+    updated_date    = models.DateTimeField(auto_now = True,blank=True,null=True)
+    created_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="role_created_by")
+    updated_by      = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, related_name="role_updated_by")
+
+
+
+
 
 class ActivityType(models.Model):
     name                = models.CharField(max_length=225,unique=True)

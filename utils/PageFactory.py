@@ -150,12 +150,8 @@ def this_func_to_path(parent=False,subdir=False):
         curframe = inspect.currentframe()
         calframe = inspect.getouterframes(curframe, 2)
         dir=str(calframe[1][3]).split(_split, 1)
-        print(dir[0]+ds+tdn.pages+ds+calframe[1][3]+tdn.html)
-        print(dir[0])
-        print(calframe[1][3].split("_")[-1])
-
-        print(tdn.pages)
         return dir[0]+ds+tdn.pages+ds+calframe[1][3]+tdn.html
+    
     elif subdir:
         curframe = inspect.currentframe()
         calframe = inspect.getouterframes(curframe, 2)
