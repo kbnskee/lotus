@@ -53,6 +53,26 @@ class Command(BaseCommand):
         elif _arg=="init-app":
             self.__init_app()
 
+        elif _arg=="supload":
+            from apps.subjectms.models import Subject
+            excel_data = openpyxl.load_workbook("supload.xlsx")
+            sheet=excel_data["Sheet1"]
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                Subject.objects.create(
+                    id=row['id'],
+                    name=row['name'],
+                    description=row['description'],
+                    is_enabled=row['is_enabled'],
+                    created_by_id=row['created_by_id'],
+                    type_id=row['type_id'],
+                    code=row['code'],
+                    passing_score_percentage=row['passing_score_percentage'],
+                    passing_validity=row['passing_validity'],
+                    written_works_percentage=row['written_works_percentage'],
+                    practical_test_percentage=row['practical_test_percentage'],
+                    quarterly_exam_percentage=row['quarterly_exam_percentage'],
+                    year_level_id=row['year_level_id']
+                )
         elif _arg=="clearbasedata":
             self.__clear_tables()
 
@@ -84,7 +104,7 @@ class Command(BaseCommand):
 
 
     def __init_app(self):
-        self.__delete_app_table_contnet()
+        # self.__delete_app_table_contnet()
         self.__upload_excel()
 
     def __reset(self):
@@ -291,20 +311,21 @@ class Command(BaseCommand):
         from apps.itadmin.apps import ItadminConfig
         from apps.gradems.apps import GrademsConfig
         from apps.conductms.apps import ConductmsConfig
+        from apps.cashier.apps import CashierConfig
 
 
+        # self.__upload_app_models(CashierConfig.name)
 
 
-
-        self.__upload_app_models(SchoolmsConfig.name)
-        self.__upload_app_models(CompanybasemsConfig.name)
-        self.__upload_app_models(TuitionmsConfig.name)
-        self.__upload_app_models(TeacherConfig.name)
-        self.__upload_app_models(SubjectmsConfig.name)
-        self.__upload_app_models(SectionmsConfig.name)
-        self.__upload_app_models(ItadminConfig.name)
-        self.__upload_app_models(GrademsConfig.name)
-        self.__upload_app_models(ConductmsConfig.name)
+        # self.__upload_app_models(SchoolmsConfig.name)
+        # self.__upload_app_models(CompanybasemsConfig.name)
+        # self.__upload_app_models(TuitionmsConfig.name)
+        # self.__upload_app_models(TeacherConfig.name)
+        # self.__upload_app_models(SubjectmsConfig.name)
+        # self.__upload_app_models(SectionmsConfig.name)
+        # self.__upload_app_models(ItadminConfig.name)
+        # self.__upload_app_models(GrademsConfig.name)
+        # self.__upload_app_models(ConductmsConfig.name)
 
 
     def __upload_app_models(self,model):
