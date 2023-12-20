@@ -31,16 +31,11 @@ def sentry(function):
                 return redirect('homems_home')                    
             else:
                 _user_group=UserGroup.objects.get(user=request.user)
-                print(_user_group)
                 _user_apps=list(GroupApp.objects.filter(group=_user_group.group).values_list('app__name', flat=True))
-                print(_user_apps)
                 _user_pages=list(GroupPage.objects.filter(group=_user_group.group).values_list('page__path', flat=True))
-                print(_user_pages)
    
                 if app in _user_apps:
-                    print(page)
                     if page in _user_pages:
-                        print(page)
                         return function(request,*args,**kwargs)
                     else:
                         print("PAGE ACCESS ERROR")
