@@ -336,3 +336,10 @@ def lotus_404(request,violation,message):
     c=cpl(request,app_name="Lotus",page_name="Access Violation")
 
     return render(request,tftp(subdir="warning"),c) 
+
+
+
+def lotus_exception(request):
+    c=cpl(request,app_name="Lotus",page_name="Exception Page")
+
+    return render(request,tftp(subdir="warning"),c) 
