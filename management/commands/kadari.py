@@ -117,6 +117,7 @@ class Command(BaseCommand):
         School.objects.all().delete()
         Stage.objects.all().delete()
         YearLevel.objects.all().delete()
+        
         self.stdout.write("Cleaning School, Stage, YearLevel...OK!")
 
 
