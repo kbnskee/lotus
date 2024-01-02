@@ -1,0 +1,135 @@
+{% extends 'lotus/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="col-md">
+      <div class="rinar-card">
+        <div class="rinar-card-header">
+          <div class="fw-bold">Employee Basic Information</div>
+        </div>
+        <div class="rinar-card-body">
+          <form method="POST"> {% csrf_token %} 
+            <div class="row mb-1">
+              <div class="col-lg-2">
+                  <label class="form-label form-label-sm">School</label>
+              </div>
+              <div class="col-lg-10">{{form.school}}</div>
+            </div>
+
+            <div class="row mb-1">
+              <div class="col-lg-2">
+                  <label class="form-label form-label-sm">Role</label>
+              </div>
+              <div class="col-lg-10">{{form.role}}</div>
+            </div>
+
+          <div class="row mb-1">
+              <div class="col-lg-2">
+                  <label class="form-label form-label-sm">Last Name</label>
+              </div>
+              <div class="col-lg-10">{{form.last_name}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">First Name</label>
+            </div>
+            <div class="col-lg-10">{{form.first_name}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Middle Name</label>
+            </div>
+            <div class="col-lg-10">{{form.middle_name}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Present Address</label>
+            </div>
+            <div class="col-lg-2">{{form.presadd_street}}</div>
+            <div class="col-lg-2">{{form.presadd_brgy}}</div>
+            <div class="col-lg-2">{{form.presadd_city}}</div>
+            <div class="col-lg-2">{{form.presadd_prov}}</div>
+            <div class="col-lg-2">{{form.presadd_zipcode}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Provincial Address</label>
+            </div>
+            <div class="col-lg-2">{{form.provadd_street}}</div>
+            <div class="col-lg-2">{{form.provadd_brgy}}</div>
+            <div class="col-lg-2">{{form.provadd_city}}</div>
+            <div class="col-lg-2">{{form.provadd_prov}}</div>
+            <div class="col-lg-2">{{form.provadd_zipcode}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Mobile Number</label>
+            </div>
+            <div class="col-lg-10">{{form.mobile_no}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Birth Date</label>
+            </div>
+            <div class="col-lg-10">{{form.birth_date}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Birth Place</label>
+            </div>
+            <div class="col-lg-10">{{form.birth_place}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Gender</label>
+            </div>
+            <div class="col-lg-10">{{form.gender}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Civil Status</label>
+            </div>
+            <div class="col-lg-10">{{form.civil_status}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Citizenship</label>
+            </div>
+            <div class="col-lg-10">{{form.citizenship}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Religious Affiliation</label>
+            </div>
+            <div class="col-lg-10">{{form.religious_affiliation}}</div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-lg-2">
+                <label class="form-label form-label-sm">Language/s and Dialect/s</label>
+            </div>
+            <div class="col-lg-10">{{form.language}}</div>
+          </div>
+
+
+            <div class="rinar-next-button">
+              <button type="submit" class="btn btn-success  md-2" role="button">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>{% endblock content %}

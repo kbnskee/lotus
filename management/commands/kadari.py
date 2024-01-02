@@ -6,6 +6,11 @@ import openpyxl
 from django.apps import apps
 from lotus.conf import BASE_DATA
 
+# import gspread
+# from google.auth import exceptions
+# from google.oauth2 import service_account
+# from openpyxl import Workbook
+
 from lotus.models import (
     User,
     App,
@@ -22,6 +27,9 @@ from lotus.models import (
     Suffix,
     Citizenship,
     CivilStatus,
+    Role,
+    ActivityLog,
+    ActivityType
 )
 
 base_dir=BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
@@ -47,16 +55,39 @@ class Command(BaseCommand):
         if _arg=="info":
             self.__info()
 
-        elif _arg=="init-lotus":
+        elif _arg=="lotus-init":
             self.__init_lotus()
 
         elif _arg=="init-app":
             self.__init_app()
 
+        # elif _arg=="lotus-pull-predefined":
+        #     self.__get_lotus_from_googleapis()
+
+        elif _arg=="supload":
+            from apps.subjectms.models import Subject
+            excel_data = openpyxl.load_workbook("supload.xlsx")
+            sheet=excel_data["Sheet1"]
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                Subject.objects.create(
+                    id=row['id'],
+                    name=row['name'],
+                    description=row['description'],
+                    is_enabled=row['is_enabled'],
+                    created_by_id=row['created_by_id'],
+                    type_id=row['type_id'],
+                    code=row['code'],
+                    passing_score_percentage=row['passing_score_percentage'],
+                    passing_validity=row['passing_validity'],
+                    written_works_percentage=row['written_works_percentage'],
+                    practical_test_percentage=row['practical_test_percentage'],
+                    quarterly_exam_percentage=row['quarterly_exam_percentage'],
+                    year_level_id=row['year_level_id']
+                )
         elif _arg=="clearbasedata":
             self.__clear_tables()
 
-        elif _arg=="reset":
+        elif _arg=="lotus-reset":
             self.__reset()
 
         elif _arg=="factoryreset":
@@ -84,15 +115,17 @@ class Command(BaseCommand):
 
 
     def __init_app(self):
-        self.__delete_app_table_contnet()
+        # self.__delete_app_table_contnet()
         self.__upload_excel()
 
     def __reset(self):
-        self.stdout.write(f"{msg_exiting}...")
+        self.stdout.write("1. Resetting lotus...")
+        self.__delete_table_contents()
+        self.stdout.write("1. Resetting lotus...OK!")
         sys.exit()
 
     def __delete_table_contents(self):
-        self.stdout.write("1. Deleting Table Contents...")
+        self.stdout.write("1. Deleting Lotus tables...")
         User.objects.all().delete()
         App.objects.all().delete()
         Page.objects.all().delete()
@@ -108,9 +141,10 @@ class Command(BaseCommand):
         Suffix.objects.all().delete()
         Citizenship.objects.all().delete()
         CivilStatus.objects.all().delete()
-        
-        
-        self.stdout.write("1. Deleting Table Contents...OK!")
+        Role.objects.all().delete()
+        ActivityType.objects.all().delete()
+        ActivityLog.objects.all().delete()
+        self.stdout.write("1. Deleting Lotus tables...OK!")
 
     def __delete_app_table_contnet(self):
         from apps.schoolms.models import School, Stage, YearLevel
@@ -154,12 +188,54 @@ class Command(BaseCommand):
     def __create_lotus_app(self):
         self.stdout.write("5. Creating Lotus App...")
         App.objects.create(id=100,name="lotus",created_by_id=self.__get_superuser().id,is_enabled=True)
-        GroupApp.objects.create(group_id=1,app_id=100)
+        GroupApp.objects.create(id=1,group_id=1,app_id=100)
         self.stdout.write("5. Creating Lotus App... OK")
     
 
     def __get_lotus_app(self):
         return App.objects.get(id=100,name="lotus")
+    
+
+    # def __get_lotus_from_googleapis(self):
+    #     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+    #     try:
+    #         credentials = service_account.Credentials.from_service_account_file(
+    #             "lotus-dio-predat-e366e06d8b99.json", scopes=scope
+    #         )
+    #     except exceptions.DefaultCredentialsError:
+    #         raise ValueError("Failed to authenticate with Google Sheets API. Check your credentials.")
+
+    #     gc = gspread.authorize(credentials)
+
+    #     # Open the Google Sheet using its title or URL
+    #     # Replace 'Your Google Sheet Name' with your actual sheet name or URL
+    #     workbook = gc.open("https://docs.google.com/spreadsheets/d/1S9mmEmpdYGYcrhoc2Xi9n-U2eDV-OQbC7qA3ySwCZTg/edit")
+
+    #     # Create a new Excel workbook
+    #     output_excel_file = "predefined_lotus.xlsx"
+    #     wb = Workbook()
+
+    #     # Iterate through all sheets in the workbook
+    #     for sheet in workbook:
+    #         # Get all values from the sheet
+    #         data = sheet.get_all_values()
+
+    #         # Add a new worksheet to the Excel workbook
+    #         ws = wb.create_sheet(title=sheet.title)
+
+    #         # Write the data to the worksheet
+    #         for row in data:
+    #             ws.append(row)
+
+    #     # Remove the default empty sheet created by openpyxl
+    #     if 'Sheet' in wb.sheetnames:
+    #         wb.remove(wb['Sheet'])
+
+    #     # Save the entire workbook to a local Excel file
+    #     wb.save(output_excel_file)
+
+    #     print(f"Workbook downloaded and saved to '{output_excel_file}'")
 
     
     def __create_lotus_pages(self):
@@ -292,9 +368,7 @@ class Command(BaseCommand):
         from apps.itadmin.apps import ItadminConfig
         from apps.gradems.apps import GrademsConfig
         from apps.conductms.apps import ConductmsConfig
-
-
-
+        from apps.cashier.apps import CashierConfig
 
 
         self.__upload_app_models(SchoolmsConfig.name)
@@ -306,6 +380,7 @@ class Command(BaseCommand):
         self.__upload_app_models(ItadminConfig.name)
         self.__upload_app_models(GrademsConfig.name)
         self.__upload_app_models(ConductmsConfig.name)
+        self.__upload_app_models(CashierConfig.name)
 
 
     def __upload_app_models(self,model):
@@ -314,24 +389,20 @@ class Command(BaseCommand):
 
         try:
             excel_file_path = excel_file_path
-
             workbook = openpyxl.load_workbook(excel_file_path, read_only=True, data_only=True)
 
             for sheet in workbook.sheetnames:
                 model_name = sheet.capitalize()
                 django_model = apps.get_model(app_label=model.split(".")[1], model_name=model_name)
-
+                
                 print(f"KDR: initializing django model: {django_model}")
-
                 if django_model:
                     sheet_data = workbook[sheet]
-
                     headers = [cell.value for cell in sheet_data[1]]
                     for row in sheet_data.iter_rows(min_row=2, values_only=True):
                         data = dict(zip(headers, row))
                         instance = django_model(**data)
                         instance.save()
-
                     print(f"KDR: initializing django model: {django_model}...OK!")
                 else:
                     print(f'Model not found for sheet {sheet}. Check your models and sheet names.')

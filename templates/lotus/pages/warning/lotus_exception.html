@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus Exception Page</title>
+</head>
+<style>
+    .lts-err-header{
+        width: 100%;
+        font-size:xx-large; 
+        font-weight: bolder; 
+        background-color: rgb(180,207,207);
+    }
+    .lts-err-title{
+        width:100%; 
+        font-size:x-large; 
+        font-weight: bolder; 
+        padding-top: 9px;
+        padding-bottom: 9px;
+        background-color: rgb(19, 185, 185); 
+        font-style: italic;
+    }
+    .lts-err-body{
+        width:100%; 
+        font-size:large; 
+        font-weight: bolder; 
+        background-color: white;
+    }
+</style>
+<body>
+    
+    <div class="lts-err-header">
+        Server Error
+    </div>
+    
+    <hr>
+
+    <div class="lts-err-title" style="margin-bottom: 9px;">
+        Lotus application returned an error
+    </div>
+
+    <div class="lts-err-body">
+        <p><b>Description:</b> {{errdesc}}</p>
+        <p><b>Exception Details:</b> {{exdet}}</p>
+        <p><b>Error Source:</b>{{errsrc}}</p>
+    </div>
+
+
+</body>
+</html>

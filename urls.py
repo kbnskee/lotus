@@ -24,6 +24,9 @@ from lotus.views import (
 
     lotus_importer,
     lotus_404,
+    lotus_exception,
+
+    lotus_employee_add,
 )
 
 urlpatterns=[
@@ -55,5 +58,9 @@ urlpatterns=[
     path('lts/importer/',lotus_importer,name='lotus_importer'),
 
 
-    path('warning/404/<str:violation>/<str:message>/',lotus_404,name="lotus_404")
+    path('warning/404/<str:violation>/<str:message>/',lotus_404,name="lotus_404"),
+
+    path('warning/exception/',lotus_exception,name="lotus_exception"),
+
+    path('emp/add/',lotus_employee_add,name="lotus_employee_add")
 ]
