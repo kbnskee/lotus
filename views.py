@@ -343,3 +343,96 @@ def lotus_exception(request):
     c=cpl(request,app_name="Lotus",page_name="Exception Page")
 
     return render(request,tftp(subdir="warning"),c) 
+
+
+
+def lotus_employee_add(request):
+    c=cpl(request,nav_list=nav_list(),app_name="Lotus Admin",page_name="User")
+    from apps.employeems.forms import EmployeeInitAddForm
+    from apps.employeems.models import Employee, EmployeeAddress, EmployeeContactInformation
+    from lotus.utils.DioIdGenerator import employee_id_generator
+    
+    # print(employee_api.get_employee_by_user(request))
+
+    if request.method=="POST":
+        form=EmployeeInitAddForm(request.POST)
+        if form.is_valid():
+
+            presadd_street=form.cleaned_data['presadd_street']
+            presadd_brgy=form.cleaned_data['presadd_brgy']
+            presadd_city=form.cleaned_data['presadd_city']
+            presadd_prov=form.cleaned_data['presadd_prov']
+            presadd_zipcode=form.cleaned_data['presadd_zipcode']
+
+            provadd_street=form.cleaned_data['provadd_street']
+            provadd_brgy=form.cleaned_data['provadd_brgy']
+            provadd_city=form.cleaned_data['provadd_city']
+            provadd_prov=form.cleaned_data['provadd_prov']
+            provadd_zipcode=form.cleaned_data['provadd_zipcode']
+
+            
+
+            mobile_no=form.cleaned_data['mobile_no']
+            citizenship=form.cleaned_data['citizenship']
+            religious_affiliation=form.cleaned_data['religious_affiliation']
+            language=form.cleaned_data['language']
+            role=form.cleaned_data['role']
+
+            try:
+                instance=form.save(commit=False)
+                instance.created_by=request.user
+                instance.init_log=True
+                instance.save()
+                print("created employee")
+                add_id_no=Employee.objects.get(id=instance.id)
+                add_id_no.id_no=employee_id_generator(add_id_no.school.id,1,add_id_no.id)
+                add_id_no.save()
+
+                EmployeeAddress.objects.create(
+                    employee=instance,
+                    address_type_id=1,
+                    street=presadd_street,
+                    barangay=presadd_brgy,
+                    city=presadd_city,
+                    province=presadd_prov,
+                    zip_code=presadd_zipcode,
+                )
+                EmployeeAddress.objects.create(
+                    employee=instance,
+                    address_type_id=2,
+                    street=provadd_street,
+                    barangay=provadd_brgy,
+                    city=provadd_city,
+                    province=provadd_prov,
+                    zip_code=provadd_zipcode,
+                )
+                EmployeeContactInformation.objects.create(
+                    employee=instance,
+                    contact_type_id=1,
+                    details=mobile_no,
+                    created_by=request.user
+                )
+                
+                print("created employee")
+                user=User(username=add_id_no.id_no)
+                user.set_password(str(add_id_no.id_no))
+                user.save()
+                
+                user_group_role=Group.objects.get(id=role.id)
+                add_user_to_group=UserGroup(user_id=user.id, group=user_group_role,created_by=request.user)
+                add_user_to_group.save()
+
+                add_user_to_employee=Employee.objects.get(id=instance.id)
+                add_user_to_employee.user=user
+                add_user_to_employee.save()
+
+            except Exception as e:
+                print(str(e))
+            return redirect('employeems_employee_details',instance.id)
+        else:
+            print(form.errors)
+
+    elif request.method=="GET":
+        form=EmployeeInitAddForm()
+    c['form']=form
+    return render(request,tftp(subdir="employee"),c) 
