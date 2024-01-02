@@ -99,6 +99,9 @@ class Command(BaseCommand):
         elif _arg=="createsuperuser":
             self.__create_superuser()
 
+        elif _arg=="upload_school":
+            self.__upload_student()
+
 
     def __info(self):
         self.stdout.write(f"kadari 1.0")
@@ -164,13 +167,13 @@ class Command(BaseCommand):
 
     def __create_superuser_group(self):
         self.stdout.write("3. Createing Superuser Group...")
-        group=Group(id=1,name="kadari")
+        group=Group(id=1,name="superuser")
         group.created_by=self.__get_superuser()
         group.save()
         self.stdout.write("3. Createing Superuser Group...OK!")
 
     def __get_superuser_group(self):
-        return Group.objects.get(name="kadari")
+        return Group.objects.get(name="superuser")
     
     def __get_superuser(self):
         return User.objects.get(username="kadari")
@@ -411,6 +414,36 @@ class Command(BaseCommand):
         except Exception as e:
             print(f'Error: {str(e)}')
             self.stdout.write(f"{msg_exiting}...")
+
+
+    def __upload_student(self):
+        print(f"KDR: init-app. Upload Excel...  ")
+        excel_file_path = os.path.join(os.getcwd(), "school.xlsx")
+
+        try:
+            excel_file_path = excel_file_path
+            workbook = openpyxl.load_workbook(excel_file_path, read_only=True, data_only=True)
+
+            for sheet in workbook.sheetnames:
+                model_name = sheet.capitalize()
+                django_model = apps.get_model(app_label="students", model_name=model_name)
+                
+                print(f"KDR: initializing django model: {django_model}")
+                if django_model:
+                    sheet_data = workbook[sheet]
+                    headers = [cell.value for cell in sheet_data[1]]
+                    for row in sheet_data.iter_rows(min_row=2, values_only=True):
+                        data = dict(zip(headers, row))
+                        instance = django_model(**data)
+                        instance.save()
+                    print(f"KDR: initializing django model: {django_model}...OK!")
+                else:
+                    print(f'Model not found for sheet {sheet}. Check your models and sheet names.')
+                    sys.exit()
+
+        except Exception as e:
+            print(f'Error: {str(e)}')
+            self.stdout.write(f"{msg_exiting}...")
         
 
     def __get_excel_models(self):
@@ -463,4 +496,7 @@ class Command(BaseCommand):
             self.stdout.write(f"Clearing tables... Ok")
         else:
             self.stdout.write(f"loadbasedata... Cancelled")
+
+
+    
             
