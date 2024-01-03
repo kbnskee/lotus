@@ -99,7 +99,7 @@ class Command(BaseCommand):
         elif _arg=="createsuperuser":
             self.__create_superuser()
 
-        elif _arg=="upload_school":
+        elif _arg=="upload_students":
             self.__upload_student()
 
 
@@ -418,7 +418,7 @@ class Command(BaseCommand):
 
     def __upload_student(self):
         print(f"KDR: init-app. Upload Excel...  ")
-        excel_file_path = os.path.join(os.getcwd(), "school.xlsx")
+        excel_file_path = os.path.join(os.getcwd(), "students.xlsx")
 
         try:
             excel_file_path = excel_file_path
