@@ -374,16 +374,16 @@ class Command(BaseCommand):
         from apps.cashier.apps import CashierConfig
 
 
-        self.__upload_app_models(SchoolmsConfig.name)
-        self.__upload_app_models(CompanybasemsConfig.name)
-        self.__upload_app_models(TuitionmsConfig.name)
-        self.__upload_app_models(TeacherConfig.name)
-        self.__upload_app_models(SubjectmsConfig.name)
-        self.__upload_app_models(SectionmsConfig.name)
-        self.__upload_app_models(ItadminConfig.name)
-        self.__upload_app_models(GrademsConfig.name)
-        self.__upload_app_models(ConductmsConfig.name)
-        self.__upload_app_models(CashierConfig.name)
+        # self.__upload_app_models(SchoolmsConfig.name)
+        # self.__upload_app_models(CompanybasemsConfig.name)
+        # self.__upload_app_models(TuitionmsConfig.name)
+        # self.__upload_app_models(TeacherConfig.name)
+        # self.__upload_app_models(SubjectmsConfig.name)
+        # self.__upload_app_models(SectionmsConfig.name)
+        # self.__upload_app_models(ItadminConfig.name)
+        # self.__upload_app_models(GrademsConfig.name)
+        # self.__upload_app_models(ConductmsConfig.name)
+        # self.__upload_app_models(CashierConfig.name)
 
 
     def __upload_app_models(self,model):
