@@ -79,3 +79,37 @@ def get_activity_total(activity):
     else:
         return 0
     
+@register.filter(name='get_subject_grade_q1')
+def get_subject_grade_q1(stud, subj):
+    
+    if StudentSubjectGrade.objects.filter(student = stud, subject = subj, quarter = 1).exists():
+        final_grade = StudentSubjectGrade.objects.get(student = stud, subject = subj, quarter = 1)
+        return final_grade.final_grade
+    else:
+        return "N/A"
+    
+@register.filter(name='get_subject_grade_q2')
+def get_subject_grade_q2(stud, subj):
+    if StudentSubjectGrade.objects.filter(student = stud, subject = subj, quarter = 2).exists():
+        final_grade = StudentSubjectGrade.objects.get(student = stud, subject = subj, quarter = 2)
+        return final_grade.final_grade
+    else:
+        return "N/A"
+    
+@register.filter(name='get_subject_grade_q3')
+def get_subject_grade_q3(stud, subj):
+    
+    if StudentSubjectGrade.objects.filter(student = stud, subject = subj, quarter = 3).exists():
+        final_grade = StudentSubjectGrade.objects.get(student = stud, subject = subj, quarter = 3)
+        return final_grade.final_grade
+    else:
+        return "N/A"
+    
+@register.filter(name='get_subject_grade_q4')
+def get_subject_grade_q4(stud, subj):
+    
+    if StudentSubjectGrade.objects.filter(student = stud, subject = subj, quarter = 4).exists():
+        final_grade = StudentSubjectGrade.objects.get(student = stud, subject = subj, quarter = 4)
+        return final_grade.final_grade
+    else:
+        return "N/A"
