@@ -10,7 +10,8 @@ from apps.teacher.models import(
 )
 
 from apps.students.models import(
-    StudentSubjectGrade
+    StudentSubjectGrade,
+    StudentSubject
 )
 
 @register.filter(name='get_ww_score')
@@ -113,3 +114,96 @@ def get_subject_grade_q4(stud, subj):
         return final_grade.final_grade
     else:
         return "N/A"
+    
+
+
+@register.filter(name='get_mapeh_grade')
+def get_mapeh_grade(stud, quarter):
+    grade = 0
+    if StudentSubjectGrade.objects.filter(student = stud, subject__subject__type_id = 7, quarter = quarter).exists():
+        subject = StudentSubjectGrade.objects.filter(student = stud, subject__subject__type_id = 7, quarter = quarter)
+        for m in subject:
+            grade = grade + ((m.final_grade * m.subject.subject.subject_impact)/100)
+    return grade
+
+@register.filter(name='get_tle_grade')
+def get_tle_grade(stud, quarter):
+    grade = 0
+    if StudentSubjectGrade.objects.filter(student = stud, subject__subject__type_id = 4, quarter = quarter).exists():
+        subject = StudentSubjectGrade.objects.filter(student = stud, subject__subject__type_id = 4, quarter = quarter)
+        for m in subject:
+            grade = grade + ((m.final_grade * m.subject.subject.subject_impact)/100)
+    return grade
+
+@register.filter(name='get_specialize_grade')
+def get_specialize_grade(stud, quarter):
+    if StudentSubjectGrade.objects.filter(student = stud, subject__subject__type_id = 1, quarter = quarter).exists():
+        subject = StudentSubjectGrade.objects.get(student = stud, subject__subject__type_id = 1, quarter = quarter)
+        return subject.final_grade
+    else:
+        return 0
+
+@register.filter(name='get_final_grade_average')
+def get_final_grade_average(stud, subj):
+    q1 = 0
+    q2 = 0
+    q3 = 0
+    q4 = 0
+    if get_subject_grade_q1(stud, subj) != "N/A":
+        q1 = get_subject_grade_q1(stud, subj)
+    if get_subject_grade_q2(stud, subj) != "N/A":
+        q2 = get_subject_grade_q1(stud, subj)
+    if get_subject_grade_q3(stud, subj) != "N/A":
+        q3 = get_subject_grade_q1(stud, subj)
+    if get_subject_grade_q4(stud, subj) != "N/A":
+        q4 = get_subject_grade_q1(stud, subj)
+
+    f_grade = (q1+q2+q3+q4)/4
+    return f_grade
+
+@register.filter(name='get_mapeh_final_average')
+def get_mapeh_final_average(stud):
+    q1 = 0
+    q2 = 0
+    q3 = 0
+    q4 = 0
+
+    q1 = get_mapeh_grade(stud, 1)
+    q2 = get_mapeh_grade(stud, 2)
+    q3 = get_mapeh_grade(stud, 3)
+    q4 = get_mapeh_grade(stud, 4)
+
+    f_grade = (q1+q2+q3+q4)/4
+    return f_grade
+
+@register.filter(name='get_tle_final_average')
+def get_tle_final_average(stud):
+    q1 = 0
+    q2 = 0
+    q3 = 0
+    q4 = 0
+
+    q1 = get_tle_grade(stud, 1)
+    q2 = get_tle_grade(stud, 2)
+    q3 = get_tle_grade(stud, 3)
+    q4 = get_tle_grade(stud, 4)
+
+    f_grade = (q1+q2+q3+q4)/4
+    return f_grade
+
+
+@register.filter(name='get_student_core_subjects')
+def get_student_core_subjects(stud):
+    return StudentSubject.objects.filter(student = stud, subject__subject__type_id = 2)
+
+@register.filter(name='get_student_mapeh_subjects')
+def get_student_mapeh_subjects(stud):
+    return StudentSubject.objects.filter(student = stud, subject__subject__type_id = 7)
+
+@register.filter(name='get_student_tle_subjects')
+def get_student_tle_subjects(stud):
+    return StudentSubject.objects.filter(student = stud, subject__subject__type_id = 4)
+
+@register.filter(name='get_student_specialize_subjects')
+def get_student_specialize_subjects(stud):
+    return StudentSubject.objects.filter(student = stud, subject__subject__type_id = 1)
